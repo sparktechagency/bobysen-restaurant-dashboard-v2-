@@ -10,14 +10,11 @@ import { toast } from "sonner";
 import ErrorResponse from "../../component/UI/ErrorResponse";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { authValidationSchema } from "../../schema/auth.schema";
-interface PasswordProps {
-  newPassword: string;
-  confirmPassword: string;
-}
+import { FieldValues, SubmitHandler } from "react-hook-form";
 const NewPassword = () => {
   const [resetPassword] = useResetPasswordMutation();
   const navigate = useNavigate();
-  const onSubmit = async (data: PasswordProps) => {
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     const toastId = toast.loading("Password resetting....");
     try {
       await resetPassword(data).unwrap();

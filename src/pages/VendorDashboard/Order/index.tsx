@@ -11,7 +11,7 @@ const Order = () => {
   const { id } = useParams();
 
   const { data: orderData, isLoading } = useGetorderByBookingIdQuery(id);
-  console.log();
+  //console.log();
   const formatedData = orderData?.data?.items?.map(
     (data: any, index: number) => {
       return {

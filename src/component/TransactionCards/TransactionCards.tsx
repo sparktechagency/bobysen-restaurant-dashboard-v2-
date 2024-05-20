@@ -2,7 +2,7 @@ import { RiMoneyDollarBoxLine } from "react-icons/ri";
 import { useGetWalletStaticsForAdminQuery } from "../../redux/features/wallet/walletApi";
 const TransactionCards = () => {
   const { data } = useGetWalletStaticsForAdminQuery({});
-  console.log(data);
+  //console.log(data);
   return (
     <div className="flex gap-x-4">
       <div className="bg-white w-[400px] py-6 px-4 rounded">

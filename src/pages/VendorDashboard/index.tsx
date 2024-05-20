@@ -39,18 +39,18 @@ const VendorDashboard = () => {
           {/* section 2 */}
           <div className="flex gap-x-10 my-6">
             <div>
-              <div className="flex gap-x-2 items-center ">
+              <div className="flex gap-x-2 items-center  invisible">
                 <img src={avg} alt="" />
                 <h1 className="text-32 font-700">250k</h1>
               </div>
             </div>
-            <div>
+            {/* <div>
               <div className="flex gap-x-2 items-center ">
                 <img src={avg} alt="" />
                 <h1 className="text-32 font-700">10k</h1>
               </div>
               <p className="text-deepGray text-18">Today Sales</p>
-            </div>
+            </div> */}
           </div>
           <VendorChart data={staticsData?.data} />
         </div>

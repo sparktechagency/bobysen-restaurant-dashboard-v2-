@@ -24,10 +24,10 @@ const Table = () => {
   const { data: tableData, isLoading } = useGetTablesQuery(undefined);
 
   // const handleBookedTable = (id: string, type: string) => {
-  //   console.log(id, type);
+  //   //console.log(id, type);
   // };
   // const handleDeleteTable = async (id: string) => {
-  //   console.log(id);
+  //   //console.log(id);
   // };
 
   const dispatch = useAppDispatch();

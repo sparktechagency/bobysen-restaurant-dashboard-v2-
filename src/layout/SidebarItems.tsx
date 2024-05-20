@@ -8,7 +8,7 @@ import { NavLink } from "react-router-dom";
 import { MdPeopleOutline } from "react-icons/md";
 
 const handleLogout = async () => {
-  console.log("done");
+  //console.log("done");
 };
 export const SidebarItems = [
   {

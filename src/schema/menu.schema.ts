@@ -16,7 +16,7 @@ const menuSchema = z.object({
   price: z.coerce
     .number({ required_error: "Price is required" })
     .min(1, { message: "Price is required" }),
-  available: z.string({ required_error: "Available  is required" }),
+  available: z.string().optional(),
   description: z
     .string({ required_error: "Description is required" })
     .min(1, { message: "Description is required" }),

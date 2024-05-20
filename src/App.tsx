@@ -15,7 +15,7 @@ function App() {
     socket.connect();
     const handleNotificationEvent = (data: any) => {
       dispatch(setNotification(data));
-      console.log(data);
+      //console.log(data);
     };
 
     socket.on(user?.userId as string, handleNotificationEvent);

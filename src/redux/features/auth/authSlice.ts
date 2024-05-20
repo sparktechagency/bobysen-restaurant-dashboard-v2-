@@ -31,7 +31,7 @@ const authSlice = createSlice({
       state.token = token;
     },
     setvendorDetails: (state, action) => {
-      console.log(action.payload);
+      //console.log(action.payload);
       state.vendorDetails = action.payload;
     },
     logout: (state) => {

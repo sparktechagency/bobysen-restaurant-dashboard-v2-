@@ -20,7 +20,7 @@ const HeaderLayout = () => {
     (state) => state.notification.notification
   );
   useEffect(() => {
-    console.log(notification);
+    //console.log(notification);
     toast.info(notification?.message);
   }, [notification]);
   const { pathname } = useLocation();

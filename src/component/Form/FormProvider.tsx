@@ -40,7 +40,7 @@ const ResForm = ({
 
   const submit: SubmitHandler<FieldValues> = (data) => {
     onSubmit(data);
-    // methods.reset();
+    methods.reset();
   };
 
   return (

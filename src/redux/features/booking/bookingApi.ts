@@ -13,7 +13,7 @@ const bookingApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.booking],
       // transformResponse: (response: TResponseRedux<any>) => {
-      //   console.log("response", response);
+      //   //console.log("response", response);
       //   return {
       //     data: response.data,
       //     meta: response.meta,

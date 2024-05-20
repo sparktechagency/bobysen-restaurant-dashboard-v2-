@@ -13,11 +13,10 @@ import UseImageUpload from "../../../hooks/useImageUpload";
 import FileUpload from "../../../component/FileUpload";
 import { Form } from "antd";
 import showImage from "../../../utils/showImage";
-
 const EditCategory = ({ setshowEditModal }: any) => {
   const [EditMenuCategory] = useEditMyMenuCategoriesMutation();
   const categoryData: any = useAppSelector((state) => state.menu.category);
-
+  // const { data: singleCategoryData } = useGetSingleCategoryQuery(id);
   const { setFile, imageUrl, imageFile } = UseImageUpload();
 
   const onSubmit = async (data: any) => {

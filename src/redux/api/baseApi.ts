@@ -37,7 +37,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
   DefinitionType
 > = async (args, api, extraOptions): Promise<any> => {
   let result = await baseQuery(args, api, extraOptions);
-  console.log(result);
+  //console.log(result);
   if (result?.error?.status === 404) {
     toast.error((result.error.data as any).message);
   }
@@ -46,7 +46,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
   }
   if (result?.error?.status === 401) {
     //* Send Refresh
-    console.log("Sending refresh token");
+    //console.log("Sending refresh token");
 
     const res = await fetch(
       "http://103.145.138.78:5000/api/v1/auth/refresh-token",
@@ -57,7 +57,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     );
 
     const data = await res.json();
-    console.log("data", data);
+    //console.log("data", data);
     if (data?.data?.accessToken) {
       const user = (api.getState() as RootState).auth.user;
 

@@ -3,7 +3,7 @@
 import { Divider } from "antd";
 import showImage from "../../utils/showImage";
 const SellingItems = ({ data }: any) => {
-  console.log(data);
+  //console.log(data);
   return (
     <div className=" ">
       <div className="flex justify-between">

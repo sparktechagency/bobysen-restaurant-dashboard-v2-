@@ -16,7 +16,7 @@ const VendorRestaurant = () => {
   const [show, setshow] = useState<boolean>(false);
   const query = {};
   const { data: restaurantData } = useGetAllRestaurantsQuery(query);
-  console.log(restaurantData);
+  //console.log(restaurantData);
   const navigate = useNavigate();
   const column = [
     {

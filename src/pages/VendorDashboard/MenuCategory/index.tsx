@@ -34,7 +34,6 @@ const MenuCategory = () => {
     },
     {
       title: "Action",
-
       key: "action",
       render: (data: any, index: number) => {
         return (
@@ -57,6 +56,8 @@ const MenuCategory = () => {
       serial: index,
       createdAt: moment(data?.createdAt).format("YYYY-MM-DD HH:mm: a"),
       title: data?.title,
+      image: data?.image,
+      _id: data?._id,
     };
   });
   return (

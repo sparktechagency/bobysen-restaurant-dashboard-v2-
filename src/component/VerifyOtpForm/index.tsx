@@ -60,7 +60,7 @@ const VerifyOtpFrom = () => {
       const res: any = await resendOtps({
         email: sessionStorage.getItem("email"),
       }).unwrap();
-      console.log(res);
+      //console.log(res);
       toast.success("Otp sent successfully", { id: toastId, duration: 2000 });
       sessionStorage.setItem("token", res?.data?.token);
     } catch (error) {

@@ -7,7 +7,7 @@ import { vendorTableTheme } from "../../../themes";
 
 const VendorTransaction = () => {
   const { data: walletData, isLoading } = useGetVendorWalletDetailsQuery({});
-  console.log(walletData?.data[0]?.paymentHistory);
+  //console.log(walletData?.data[0]?.paymentHistory);
   const column = [
     {
       title: "Serial",

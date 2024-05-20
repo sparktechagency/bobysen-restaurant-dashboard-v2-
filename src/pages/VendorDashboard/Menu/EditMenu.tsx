@@ -17,6 +17,7 @@ import ErrorResponse from "../../../component/UI/ErrorResponse";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { menuValidationSchema } from "../../../schema/menu.schema";
 const EditMenu = ({ data, setShow }: any) => {
+  //console.log(data);
   const { imageUrl, setFile, imageFile } = UseImageUpload();
   const { data: categoryData } = useGetMYmenuCategoriesQuery(undefined);
   const [editMenu] = useUpdateMenuMutation();

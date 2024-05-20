@@ -9,7 +9,7 @@ interface TPrivateRoute {
   role: string | undefined;
 }
 const PrivateRoute = ({ children, role }: TPrivateRoute) => {
-  console.log(role);
+  //console.log(role);
   const token = useAppSelector(useCurrentToken);
 
   let user: any;

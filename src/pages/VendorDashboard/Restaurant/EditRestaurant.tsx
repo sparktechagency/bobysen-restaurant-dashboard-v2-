@@ -65,7 +65,7 @@ const EditRestaurant = () => {
         id: toastId,
         duration: 2000,
       });
-      //   console.log(res);
+      //   //console.log(res);
       navigate("/vendor/restaurant");
     } catch (err) {
       ErrorResponse(err, toastId);

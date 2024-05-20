@@ -25,7 +25,7 @@ const UpdatePasswordForm = () => {
   const [resetPassword] = useResetPasswordMutation();
   const user: TUser | null = useAppSelector(useCurrentUser);
   const onSubmit = async (data: SubmitProps) => {
-    console.log(data);
+    //console.log(data);
     const toastId = toast.loading("Resetting");
     try {
       const res = await resetPassword(data).unwrap();

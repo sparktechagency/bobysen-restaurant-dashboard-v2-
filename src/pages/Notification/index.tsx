@@ -13,6 +13,7 @@ import { toast } from "sonner";
 import ErrorResponse from "../../component/UI/ErrorResponse";
 import ResPagination from "../../component/UI/Pagination";
 import { useState } from "react";
+import NoData from "../../component/NoData/NoData";
 
 const Notification = () => {
   const [page, setPage] = useState<number>(1);
@@ -33,6 +34,7 @@ const Notification = () => {
         id: toastId,
         duration: 2000,
       });
+      window.location.reload();
     } catch (error) {
       ErrorResponse(error, toastId);
     }
@@ -45,17 +47,23 @@ const Notification = () => {
         </Button>
       </div>
       <div className="container mx-auto mt-4">
-        <Row gutter={[16, 16]}>
-          {notificationData?.data?.map((data: any, index: number) => (
-            <NotificationCard key={index} data={data} />
-          ))}
-        </Row>
-        <div className=" text-end mt-4">
-          <ResPagination
-            total={notificationData?.meta?.total as number}
-            onChange={onChange}
-          />
-        </div>
+        {notificationData ? (
+          <>
+            <Row gutter={[16, 16]}>
+              {notificationData.data.map((data: any, index: number) => (
+                <NotificationCard key={index} data={data} />
+              ))}
+            </Row>
+            <div className="text-end mt-4">
+              <ResPagination
+                total={notificationData?.meta?.total as number}
+                onChange={onChange}
+              />
+            </div>
+          </>
+        ) : (
+          <NoData />
+        )}
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ import { authValidationSchema } from "../../schema/auth.schema";
 import { useAppDispatch } from "../../redux/hooks";
 import { setToken } from "../../redux/features/otp/otpSlice";
 import ResForm from "../../component/Form/FormProvider";
+import { FieldValues, SubmitHandler } from "react-hook-form";
 
 interface SubmitProps {
   currentPassword: string;
@@ -29,9 +30,8 @@ const ChangePasswordFrom = () => {
   const [changePassword] = useChangePasswordMutation();
   const { data: profile } = useProfileQuery(undefined);
   const [forgotPassword] = useForgotPasswordMutation();
-  const onSubmit = async (data: SubmitProps) => {
-    console.log(data);
-    const toastId = toast("Changing");
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    const toastId = toast("Changing......");
     try {
       const res: any = await changePassword(data).unwrap();
       toast.success("Password changed successfully", {
@@ -46,7 +46,7 @@ const ChangePasswordFrom = () => {
     const toastId = toast.loading("Sending Otp");
     try {
       const res = await forgotPassword(profile?.data).unwrap();
-      console.log(res);
+      //console.log(res);
       toast.success("An otp sent to your email address", {
         id: toastId,
         duration: 2000,
@@ -86,7 +86,7 @@ const ChangePasswordFrom = () => {
             placeholder="enter your new  password"
           />
           <ResInput
-            label="Old Password"
+            label="Confirm Password"
             type="password"
             size="large"
             name="confirmPassword"

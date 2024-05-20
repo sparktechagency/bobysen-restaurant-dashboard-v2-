@@ -44,7 +44,7 @@ const menuApi = baseApi.injectEndpoints({
     }),
     updateMenu: builder.mutation({
       query: (data) => {
-        console.log("Data to be sent:", data); // Add this line to log the data
+        //console.log("Data to be sent:", data); // Add this line to log the data
         return {
           url: `/menu/${data?.id}`,
           method: "PATCH",

@@ -21,7 +21,7 @@ const ProfileForm = ({ ProfileData, imageFile }: any) => {
     fullName: ProfileData?.data?.fullName,
   };
   const onSubmit = async (data: ProfilePros) => {
-    console.log(data);
+    //console.log(data);
     const toastId = toast.loading("Updating profile...");
 
     try {
