@@ -1,34 +1,73 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
-import MultiUpload from "../../../component/MultiUpload/MultiUpload";
 import { Button, Col, Divider, Form, Row, Switch, UploadFile } from "antd";
 import { RcFile } from "antd/es/upload";
+import { useEffect, useState } from "react";
+import MultiUpload from "../../../component/MultiUpload/MultiUpload";
 
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
+import ResForm from "../../../component/Form/FormProvider";
+import ResDatePicker from "../../../component/Form/ResDatePicker";
 import ResInput from "../../../component/Form/ResInput";
 import ResTextArea from "../../../component/Form/ResTextarea";
 import ResTimePicker from "../../../component/Form/ResTimepicker";
-import { useAddRestaurantMutation } from "../../../redux/features/restaurant/restaurantApi";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
-import { toast } from "sonner";
-import ResDatePicker from "../../../component/Form/ResDatePicker";
-import moment from "moment";
-import { days } from "../../../constant/days";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { days, defaultTimes } from "../../../constant/days";
+import { TimeValues } from "../../../interface/time";
+import { useAddRestaurantMutation } from "../../../redux/features/restaurant/restaurantApi";
 import { restaurantSchema } from "../../../schema/restaurant.schema";
-import ResForm from "../../../component/Form/FormProvider";
-import dayjs from "dayjs";
-import { useNavigate } from "react-router-dom";
-
 const CreateRestaurant = () => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+
+  const [currentPosition, setCurrentPosition] = useState<any>({});
+  console.log(currentPosition);
+  const cloneDays = [...days];
+  const values: { [key: string]: TimeValues } = {};
+  cloneDays.forEach((day: string) => {
+    values[day] = { ...defaultTimes };
+  });
   const navigate = useNavigate();
   const [reviewStatus, setReviewStatus] = useState(true);
   const [addRestaurant] = useAddRestaurantMutation();
   const onChange = (value: boolean) => {
     setReviewStatus(value);
   };
+
+  const getCurrentEndpoint = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          setCurrentPosition({ lat: latitude, lng: longitude });
+        },
+        (error) => {
+          console.error("Error getting user location:", error);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  };
+
+  useEffect(() => {
+    getCurrentEndpoint();
+  }, []);
   const onSubmit = async (data: any) => {
+    const location = {
+      latitude: currentPosition?.lat,
+      longitude: currentPosition?.lng,
+      coordinates: [
+        parseFloat(currentPosition?.lng),
+        parseFloat(currentPosition?.lat),
+      ],
+    };
+    const formatedData = {
+      ...data,
+      location,
+    };
+    const toastId = toast.loading("Creating new restaurant...");
     // check at least 5 images
     if (fileList.length !== 5) {
       toast.error("Please select 5 image before submitting..");
@@ -40,10 +79,10 @@ const CreateRestaurant = () => {
         formData.append("files", file.originFileObj); // Append the file object
       });
     }
-    formData.append("data", JSON.stringify({ ...data, reviewStatus }));
-    const toastId = toast.loading("Creating new restaurant...");
+    formData.append("data", JSON.stringify({ ...formatedData, reviewStatus }));
+
     try {
-      const res = await addRestaurant(formData).unwrap();
+      await addRestaurant(formData).unwrap();
       toast.success("Restaurant added successfully", {
         id: toastId,
         duration: 2000,
@@ -57,6 +96,7 @@ const CreateRestaurant = () => {
     <div>
       <ResForm
         onSubmit={onSubmit}
+        defaultValues={values}
         resolver={zodResolver(restaurantSchema.insertRestaurantSchema)}
       >
         <Row gutter={[14, 0]}>
@@ -80,10 +120,10 @@ const CreateRestaurant = () => {
           <Col span={12}>
             <ResInput
               size="large"
-              label="Enter Restaurant Location"
+              label="Enter Restaurant address"
               type="text"
-              name="location"
-              placeholder="type restaurant location"
+              name="address"
+              placeholder="type restaurant address"
             />
           </Col>
           <Col span={24}>
@@ -111,13 +151,40 @@ const CreateRestaurant = () => {
               placeholder="select date and time"
             />
           </Col>
-          <Col span={24}>
+          <Col span={6}>
+            <ResInput
+              size="large"
+              label="Enter helpineNumber (the number should have whatsapp)"
+              type="text"
+              name="helpLineNumber1"
+              placeholder="type number"
+            />
+          </Col>
+          <Col span={6}>
+            <ResInput
+              size="large"
+              label="Enter Another Number"
+              type="text"
+              name="helpLineNumber2"
+              placeholder="type number"
+            />
+          </Col>
+          <Col span={24} className="flex gap-x-4">
             <Form.Item name="review-status">
               <div className="flex gap-x-2 items-center">
                 <p>Review Status</p>
                 <Switch defaultChecked onChange={onChange} />
               </div>
             </Form.Item>
+            {/* <Form.Item>
+              <Button
+                onClick={getCurrentEndpoint}
+                icon={<FaMapMarkerAlt />}
+                className="bg-primary text-white "
+              >
+                Allow Your Map Location
+              </Button>
+            </Form.Item> */}
           </Col>
 
           <Col span={12}>

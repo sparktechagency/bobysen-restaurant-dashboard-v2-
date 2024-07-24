@@ -7,13 +7,13 @@ import {
   createApi,
   fetchBaseQuery,
 } from "@reduxjs/toolkit/query/react";
-import { RootState } from "../store";
-import { logout, setUser } from "../features/auth/authSlice";
 import { toast } from "sonner";
 import { tagTypesList } from "../../types/tagTypes";
+import { logout, setUser } from "../features/auth/authSlice";
+import { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://103.145.138.74:5000/api/v1",
+  baseUrl: "http://192.168.10.61:5005/api/v1",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const otpToken = sessionStorage.getItem("token");

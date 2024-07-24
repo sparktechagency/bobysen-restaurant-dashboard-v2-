@@ -9,6 +9,7 @@ interface InputProps {
   label?: string;
   size?: SizeType;
   placeholder?: string;
+  format?: string;
   labelColor?: string;
   showTime?: boolean;
 }
@@ -19,6 +20,7 @@ const ResDatePicker = ({
   size,
   placeholder,
   labelColor = "black",
+  format = "YYYY-MM-DD HH:mm",
   showTime = false,
 }: InputProps) => {
   return (
@@ -36,11 +38,9 @@ const ResDatePicker = ({
             id={name}
             size={size}
             placeholder={placeholder}
-            format="YYYY-MM-DD HH:mm"
+            format={format}
             onChange={(date) => {
-              field.onChange(
-                date ? dayjs(date).format("YYYY-MM-DD HH:mm") : null
-              ); // Set HH:mm format on change
+              field.onChange(date ? dayjs(date).format(format) : null); // Set HH:mm format on change
             }}
             value={field.value ? dayjs(field.value) : null}
           />

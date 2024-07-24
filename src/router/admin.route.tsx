@@ -1,18 +1,19 @@
-import AdminDashboard from "../pages/AdminDashboard";
-import { MdPeopleOutline } from "react-icons/md";
 import { FaHome } from "react-icons/fa";
+import { MdPeopleOutline } from "react-icons/md";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
+import AdminDashboard from "../pages/AdminDashboard";
 import Restaurant from "../pages/AdminDashboard/Restaurant";
 import Transaction from "../pages/AdminDashboard/Transaction";
 // import Payment from "../pages/AdminDashboard/Payment";
 import { CiSettings } from "react-icons/ci";
-import Setting from "../pages/Setting";
-import Notification from "../pages/Notification";
-import ChangePasswordFrom from "../pages/ChangePasswordForm";
-import PrivacyPolicy from "../pages/PrivaryPolicy";
-import TermsAndCondition from "../pages/TermsAndCondition";
 import AboutUs from "../pages/AboutUs";
+import TopRestaurant from "../pages/AdminDashboard/TopRestaurant";
+import ChangePasswordFrom from "../pages/ChangePasswordForm";
+import Notification from "../pages/Notification";
 import Otp from "../pages/Otp";
+import PrivacyPolicy from "../pages/PrivaryPolicy";
+import Setting from "../pages/Setting";
+import TermsAndCondition from "../pages/TermsAndCondition";
 import UpdatePassword from "../pages/UpdatePassword";
 
 export const adminRoute = [
@@ -21,6 +22,12 @@ export const adminRoute = [
     path: "dashboard",
     icon: <MdPeopleOutline />,
     element: <AdminDashboard />,
+  },
+  {
+    name: "Top Restaurant",
+    path: "top-restaurant",
+    icon: <FaHome />,
+    element: <TopRestaurant />,
   },
   {
     name: "Restaurants",

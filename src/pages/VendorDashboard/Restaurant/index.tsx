@@ -1,19 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import {
-  EditOutlined,
-  EyeOutlined,
-  PlusCircleOutlined,
-} from "@ant-design/icons";
-import ResTable from "../../../component/Table";
-import { vendorRestaurantData } from "../../../db";
-import { NavLink, useNavigate } from "react-router-dom";
-import { Button, Tag } from "antd";
+import { EditOutlined, PlusCircleOutlined } from "@ant-design/icons";
+import { Button } from "antd";
 import { useState } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import ResTable from "../../../component/Table";
 import { useGetAllRestaurantsQuery } from "../../../redux/features/restaurant/restaurantApi";
 
 const VendorRestaurant = () => {
   const [show, setshow] = useState<boolean>(false);
+
   const query = {};
   const { data: restaurantData } = useGetAllRestaurantsQuery(query);
   //console.log(restaurantData);
@@ -26,8 +22,8 @@ const VendorRestaurant = () => {
     },
     {
       title: "Location",
-      dataIndex: "location",
-      key: "location",
+      dataIndex: "address",
+      key: "address",
     },
     {
       title: "Total Tables",
@@ -83,7 +79,7 @@ const VendorRestaurant = () => {
   return (
     <div>
       <h1 className="text-32 font-600 mb-4 text-primary">Restaurant</h1>
-      {restaurantData?.data?.length === 0 && (
+      {restaurantData?.data?.length === 1 && (
         <div className="flex justify-end mb-4">
           <Button
             onClick={handleCreateRestaurant}

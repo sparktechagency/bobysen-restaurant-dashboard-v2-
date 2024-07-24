@@ -7,3 +7,7 @@ export const days = [
   "friday",
   "saturday",
 ];
+export const defaultTimes = {
+  openingTime: "09:00",
+  closingTime: "20:00",
+};

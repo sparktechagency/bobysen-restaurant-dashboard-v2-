@@ -51,6 +51,38 @@ const restaurantsApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.restaurant],
     }),
+    insertTopRestaurantIntoDb: builder.mutation({
+      query: (data) => ({
+        url: `/topRestaurants`,
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: [tagTypes.TopRestaurant],
+    }),
+    updateTopRestaurant: builder.mutation({
+      query: (data) => ({
+        url: `/topRestaurants/${data?.id}`,
+        method: "PATCH",
+        body: data.body,
+      }),
+      invalidatesTags: [tagTypes.TopRestaurant],
+    }),
+    getSingleTopRestaurant: builder.query({
+      query: (id) => ({
+        url: `/topRestaurants/${id}`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.TopRestaurant],
+    }),
+
+    getAllTopRestaurants: builder.query({
+      query: () => ({
+        url: `/topRestaurants`,
+        method: "GET",
+        params: { limit: "999999999999999" },
+      }),
+      providesTags: [tagTypes.TopRestaurant],
+    }),
   }),
 });
 
@@ -61,4 +93,8 @@ export const {
   useGetSingleRestaurantQuery,
   useDeleteFileMutation,
   useGetAllRestaurantForadminQuery,
+  useInsertTopRestaurantIntoDbMutation,
+  useGetAllTopRestaurantsQuery,
+  useUpdateTopRestaurantMutation,
+  useGetSingleTopRestaurantQuery,
 } = restaurantsApi;
