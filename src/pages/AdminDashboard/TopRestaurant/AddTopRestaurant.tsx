@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Col, Row } from "antd";
+import { useState } from "react";
 import { toast } from "sonner";
 import ResForm from "../../../component/Form/FormProvider";
 import ResDatePicker from "../../../component/Form/ResDatePicker";
@@ -9,18 +10,22 @@ import ResSelect from "../../../component/Form/ResSelect";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
 import {
   useGetAllRestaurantForadminQuery,
+  useGetSingleTopRestaurantQuery,
   useInsertTopRestaurantIntoDbMutation,
 } from "../../../redux/features/restaurant/restaurantApi";
 import { restaurantSchema } from "../../../schema/restaurant.schema";
 
 const AddTopRestaurant = ({ setShow }: any) => {
   const [addTopRestaurant] = useInsertTopRestaurantIntoDbMutation();
+  const [id, setId] = useState("");
   const {
     data: Rdata,
     isLoading,
     isFetching,
   } = useGetAllRestaurantForadminQuery({});
+  const { data: RSdata } = useGetSingleTopRestaurantQuery(id);
   const onSubmit = async (data: any) => {
+    console.log(data);
     const toastId = toast.loading("Adding....");
     try {
       await addTopRestaurant(data).unwrap();
