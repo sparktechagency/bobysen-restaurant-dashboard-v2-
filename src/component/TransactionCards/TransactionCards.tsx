@@ -12,7 +12,7 @@ const TransactionCards = () => {
           </div>
           <div>
             <h1 className="text-32 font-600 text-primary text-end">
-              $ {data?.data?.totalDue}
+              $ {data?.data?.totalDue ?? 0}
             </h1>
             <h1 className="text-24 font-600 text-gray ">Total Due</h1>
           </div>
@@ -25,7 +25,7 @@ const TransactionCards = () => {
           </div>
           <div>
             <h1 className="text-32 font-600 text-primary text-end">
-              $ {data?.data?.totalPaid}
+              $ {data?.data?.totalPaid ?? 0}
             </h1>
             <h1 className="text-24 font-600 text-gray ">Total Paid</h1>
           </div>

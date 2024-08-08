@@ -15,6 +15,7 @@ import PrivacyPolicy from "../pages/PrivaryPolicy";
 import Setting from "../pages/Setting";
 import TermsAndCondition from "../pages/TermsAndCondition";
 import UpdatePassword from "../pages/UpdatePassword";
+import Profile from "../pages/Profile";
 
 export const adminRoute = [
   {
@@ -80,5 +81,9 @@ export const adminRoute = [
   {
     path: "about",
     element: <AboutUs />,
+  },
+  {
+    path: "profile",
+    element: <Profile />,
   },
 ];

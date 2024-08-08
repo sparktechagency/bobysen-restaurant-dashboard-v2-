@@ -32,13 +32,13 @@ const EditTable = ({ setShow }: any) => {
       onSubmit={onSubmit}
       resolver={zodResolver(tableValidation.EditableSchema)}
     >
-      <ResInput
+      {/* <ResInput
         type="text"
         size="large"
         name="tableName"
         placeholder="Enter Table Name"
         label="Enter Table Name"
-      />
+      /> */}
       <ResInput
         type="text"
         size="large"

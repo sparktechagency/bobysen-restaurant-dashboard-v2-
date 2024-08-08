@@ -1,3 +1,4 @@
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React from "react";
 import ResForm from "../../../component/Form/FormProvider";
@@ -38,13 +39,13 @@ const CreateTable = ({ restaurantId, setShow }: TTableProps) => {
       onSubmit={onSubmit}
       resolver={zodResolver(tableValidation.createTableSchema)}
     >
-      <ResInput
+      {/* <ResInput
         type="text"
         size="large"
         name="tableName"
         placeholder="Enter Table Name"
         label="Enter Table Name"
-      />
+      /> */}
       <ResInput
         type="text"
         size="large"

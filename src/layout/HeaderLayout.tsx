@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { MenuOutlined } from "@ant-design/icons";
 import { IoIosNotifications } from "react-icons/io";
-import user from "../assets/person.png";
+import user from "../assets/avatar.png";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { Badge, Button } from "antd";
 import { setCollapsed } from "../redux/features/layout/layoutSlice";
@@ -10,11 +10,15 @@ import { toast } from "sonner";
 import { useGetMyNotificationQuery } from "../redux/features/notification/notificationApi";
 import { TUser, useCurrentUser } from "../redux/features/auth/authSlice";
 import { useEffect } from "react";
+import { useProfileQuery } from "../redux/features/auth/authApi";
+import showImage from "../utils/showImage";
 
 const HeaderLayout = () => {
   const dispatch = useAppDispatch();
   const { data: notficationData } = useGetMyNotificationQuery({ read: false });
   const User: TUser | null = useAppSelector(useCurrentUser);
+  const {data:Pdata} = useProfileQuery({})
+
   const { role }: any = User || {};
   const notification: any = useAppSelector(
     (state) => state.notification.notification
@@ -45,10 +49,11 @@ const HeaderLayout = () => {
           }}
         />
         <h1 className="text-white text-20">
-          {pathname
+          {/* {pathname
             .split(/[/ -]/)
             .map((part) => part.toUpperCase())
-            .join(" ")}
+            .join(" ")} */}
+          {role.toUpperCase()}  Dashboard
         </h1>
       </div>
       <div className="flex items-center  gap-x-6">
@@ -60,7 +65,7 @@ const HeaderLayout = () => {
 
         <NavLink to={`/${role}/profile`}>
           <img
-            src={user}
+            src={ Pdata?.data?.image ? showImage(Pdata?.data?.image) : user}
             width={40}
             className="rounded-full object-cover"
             alt=""

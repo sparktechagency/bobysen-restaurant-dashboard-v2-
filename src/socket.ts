@@ -1,4 +1,4 @@
 import { io } from "socket.io-client";
-const URL = "http://192.168.10.138:9005";
+const URL = "https://socket.bookatable.mu";
 
 export const socket = io(URL);
