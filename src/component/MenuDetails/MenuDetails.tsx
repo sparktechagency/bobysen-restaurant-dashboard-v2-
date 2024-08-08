@@ -7,6 +7,7 @@ import EditMenu from "../../pages/VendorDashboard/Menu/EditMenu";
 import showImage from "../../utils/showImage";
 const MenuDetails = ({ data }: any) => {
   const [show, setshow] = useState<boolean>(false);
+  console.log(data)
   return (
     <div>
       <ResModal title="EDIT MENU" setShowModal={setshow} showModal={show}>
@@ -19,7 +20,7 @@ const MenuDetails = ({ data }: any) => {
         <h1 className="text-20 font-600">{data?.name}</h1>
       </div>
       <h1 className="text-24 font-600 my-2">price:${data?.price}</h1>
-      <h1 className="text-18 font-600 my-2">category:juice</h1>
+      <h1 className="text-18 font-600 my-2">category:{data?.category?.title}</h1>
       <p className="text-16">{data?.description}</p>
       <div className="flex justify-between relative top-10 text-20 cursor-pointer">
         <EditOutlined onClick={() => setshow((prev) => !prev)} />

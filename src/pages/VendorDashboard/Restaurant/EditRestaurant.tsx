@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MultiUpload from "../../../component/MultiUpload/MultiUpload";
 import { Button, Col, Divider, Form, Row, Switch, UploadFile } from "antd";
 import { RcFile } from "antd/es/upload";
@@ -33,18 +33,20 @@ const EditRestaurant = () => {
   const [editRestaurant] = useEditRestaurantMutation();
   const [deletImages] = useDeleteFileMutation();
   const { data: singleRestaurantData } = useGetSingleRestaurantQuery(id!);
-  const formatedImage = singleRestaurantData?.data?.images?.map(
-    (image: any, index: number) => {
-      return {
+
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  useEffect(() => {
+    if (singleRestaurantData?.data?.images) {
+      const formattedImages = singleRestaurantData.data.images.map((image: any) => ({
         uid: image?._id,
         name: image?.url,
-        status: "done",
+        status: 'done',
         url: showImage(image?.url),
-      };
+      }));
+  
+      setFileList(formattedImages);
     }
-  );
-  const [fileList, setFileList] = useState<UploadFile[]>(formatedImage);
-
+  }, [singleRestaurantData])
   const onChange = (value: boolean) => {
     setReviewStatus(value);
   };
@@ -134,7 +136,7 @@ const EditRestaurant = () => {
               size="large"
               label="Enter Restaurant Location"
               type="text"
-              name="location"
+              name="address"
               placeholder="type restaurant location"
             />
           </Col>

@@ -28,9 +28,9 @@ const Restaurant = () => {
       key: "restauranName",
     },
     {
-      title: "Location",
-      dataIndex: "location",
-      key: "location",
+      title: "Address",
+      dataIndex: "address",
+      key: "address",
     },
     {
       title: "Created At",

@@ -80,7 +80,7 @@ const EditMenu = ({ data, setShow }: any) => {
         size="large"
       />
       <ResSelect
-        defaultValue={data?.category}
+        defaultValue={data?.category?._id}
         label="Select Category"
         name="category"
         options={options}
