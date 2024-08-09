@@ -14,7 +14,6 @@ type TFormConfig = {
 };
 
 type TFormProps = {
-
   onSubmit: SubmitHandler<FieldValues>;
   children: ReactNode;
 } & TFormConfig;
