@@ -13,15 +13,13 @@ import Swal from "sweetalert2";
 import { useForgotPasswordMutation } from "../../redux/features/auth/authApi";
 import ErrorResponse from "../../component/UI/ErrorResponse";
 import { toast } from "sonner";
+import { SubmitHandler } from "react-hook-form";
 
-interface FieldValues {
-  email: string;
-}
 
 const ForgotPassword = () => {
   const [forgotPassword] = useForgotPasswordMutation();
   const navigate = useNavigate();
-  const onSubmit = async (data: FieldValues) => {
+  const onSubmit = async (data:any) => {
     const toastId = toast.loading("Sending Otp..");
     try {
       const res = await forgotPassword(data).unwrap();
