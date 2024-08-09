@@ -67,12 +67,13 @@ const CreateRestaurant = () => {
       ...data,
       location,
     };
-    const toastId = toast.loading("Creating new restaurant...");
+
     // check at least 5 images
     if (fileList.length !== 5) {
       toast.error("Please select 5 image before submitting..");
       return;
     }
+    const toastId = toast.loading("Creating new restaurant...");
     const formData = new FormData();
     if (fileList.length > 0) {
       fileList.forEach((file: any) => {

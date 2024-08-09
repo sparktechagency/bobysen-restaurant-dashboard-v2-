@@ -33,11 +33,12 @@ const EditRestaurant = () => {
   const [editRestaurant] = useEditRestaurantMutation();
   const [deletImages] = useDeleteFileMutation();
   const { data: singleRestaurantData } = useGetSingleRestaurantQuery(id!);
+  console.log(singleRestaurantData)
 
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   useEffect(() => {
     if (singleRestaurantData?.data?.images) {
-      const formattedImages = singleRestaurantData.data.images.map((image: any) => ({
+      const formattedImages = singleRestaurantData?.data?.images?.map((image: any) => ({
         uid: image?._id,
         name: image?.url,
         status: 'done',

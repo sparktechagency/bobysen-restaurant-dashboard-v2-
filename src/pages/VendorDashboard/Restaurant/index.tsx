@@ -79,7 +79,7 @@ const VendorRestaurant = () => {
   return (
     <div>
       <h1 className="text-32 font-600 mb-4 text-primary">Restaurant</h1>
-      {restaurantData?.data?.length === 1 && (
+      {restaurantData?.data?.length === 0 && (
         <div className="flex justify-end mb-4">
           <Button
             onClick={handleCreateRestaurant}
