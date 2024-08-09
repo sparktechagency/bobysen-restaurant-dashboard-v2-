@@ -53,7 +53,7 @@ const MultiUpload = ({ fileList, setFileList, removeFile }: TfileProps) => {
   return (
     <>
       <Upload
-        action="api/file"
+        // action="api/file"
         listType="picture-card"
         fileList={fileList}
         onPreview={handlePreview}

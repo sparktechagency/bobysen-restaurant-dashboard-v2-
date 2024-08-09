@@ -62,7 +62,7 @@ const EditRestaurant = () => {
     formData.append("data", JSON.stringify({ ...data, reviewStatus }));
     const toastId = toast.loading("Editing...");
     try {
-      const res = await editRestaurant({ id: id, data: formData }).unwrap();
+await editRestaurant({ id: id, data: formData }).unwrap();
       toast.success("Restaurant edited successfully", {
         id: toastId,
         duration: 2000,
@@ -110,13 +110,12 @@ const EditRestaurant = () => {
       <ResForm
         onSubmit={onSubmit}
         defaultValues={singleRestaurantData?.data}
-        resolver={zodResolver(restaurantSchema.insertRestaurantSchema)}
+        resolver={zodResolver(restaurantSchema.EditRestaurant)}
       >
         <Row gutter={[14, 0]}>
           <Col span={24}>
             <Form.Item>
               <MultiUpload
-                removeFile={deleteFile}
                 fileList={fileList as RcFile[]}
                 setFileList={setFileList}
               />
@@ -134,10 +133,10 @@ const EditRestaurant = () => {
           <Col span={12}>
             <ResInput
               size="large"
-              label="Enter Restaurant Location"
+              label="Enter Restaurant address"
               type="text"
               name="address"
-              placeholder="type restaurant location"
+              placeholder="type restaurant address"
             />
           </Col>
           <Col span={24}>
@@ -165,16 +164,40 @@ const EditRestaurant = () => {
               placeholder="select date and time"
             />
           </Col>
-          <Col span={24}>
+          <Col span={6}>
+            <ResInput
+              size="large"
+              label="Enter helpineNumber (the number should have whatsapp)"
+              type="text"
+              name="helpLineNumber1"
+              placeholder="type number"
+            />
+          </Col>
+          <Col span={6}>
+            <ResInput
+              size="large"
+              label="Enter Another Number"
+              type="text"
+              name="helpLineNumber2"
+              placeholder="type number"
+            />
+          </Col>
+          <Col span={24} className="flex gap-x-4">
             <Form.Item name="review-status">
               <div className="flex gap-x-2 items-center">
                 <p>Review Status</p>
-                <Switch
-                  defaultValue={singleRestaurantData?.data?.reviewStatus}
-                  onChange={onChange}
-                />
+                <Switch defaultChecked onChange={onChange} />
               </div>
             </Form.Item>
+            {/* <Form.Item>
+              <Button
+                onClick={getCurrentEndpoint}
+                icon={<FaMapMarkerAlt />}
+                className="bg-primary text-white "
+              >
+                Allow Your Map Location
+              </Button>
+            </Form.Item> */}
           </Col>
 
           <Col span={12}>
