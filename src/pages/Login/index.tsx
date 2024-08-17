@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { Button } from "antd";
-import GuruForm from "../../component/Form/FormProvider";
-import ResInput from "../../component/Form/ResInput";
-import image from "./../../assets/bg_2.jpg";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { authValidationSchema } from "../../schema/auth.schema";
+import { Button } from "antd";
 import { NavLink, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { useLoginMutation } from "../../redux/features/auth/authApi";
+import GuruForm from "../../component/Form/FormProvider";
+import ResInput from "../../component/Form/ResInput";
 import ErrorResponse from "../../component/UI/ErrorResponse";
-import { useAppDispatch } from "../../redux/hooks";
+import { useLoginMutation } from "../../redux/features/auth/authApi";
 import { setUser, TUser } from "../../redux/features/auth/authSlice";
+import { useAppDispatch } from "../../redux/hooks";
+import { authValidationSchema } from "../../schema/auth.schema";
 import { verifyToken } from "../../utils/verifyToken";
+import image from "./../../assets/bg_2.jpg";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -41,9 +41,7 @@ const Login = () => {
         <div className="w-[490px] h-[450px]  bg-white px-4 rounded">
           <div className="text-center mt-6">
             <h1 className="text-primary text-32  font-600">Welcome</h1>
-            <p className="text-20 text-gray">
-              Please sign in for better experience
-            </p>
+            <p className="text-20 text-gray">Sign in here</p>
           </div>
           <div className="mt-[20px]">
             <GuruForm

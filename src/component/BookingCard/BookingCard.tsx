@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Col, Row } from "antd";
-import orderLogo from "../../assets/vendorIcon/order.png";
-import dollarLogo from "../../assets/payment.svg";
-import { useGetAllBookingQuery } from "../../redux/features/booking/bookingApi";
 import dayjs from "dayjs";
+import dollarLogo from "../../assets/payment.svg";
+import orderLogo from "../../assets/vendorIcon/order.png";
+import { useGetAllBookingQuery } from "../../redux/features/booking/bookingApi";
 const BookingCard = () => {
   const { data: totalBooking } = useGetAllBookingQuery({ status: "active" });
   const { data: totalCanlledBooking } = useGetAllBookingQuery({

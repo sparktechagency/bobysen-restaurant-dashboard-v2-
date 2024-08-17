@@ -20,6 +20,21 @@ const bookingApi = baseApi.injectEndpoints({
       //   };
       // },
     }),
+    GetAllBookingForAdmin: builder.query({
+      query: (query) => ({
+        url: "/booking/admin",
+        method: "GET",
+        params: query,
+      }),
+      providesTags: [tagTypes.booking],
+      // transformResponse: (response: TResponseRedux<any>) => {
+      //   //console.log("response", response);
+      //   return {
+      //     data: response.data,
+      //     meta: response.meta,
+      //   };
+      // },
+    }),
     UpdateBooking: builder.mutation({
       query: (data) => ({
         url: `/booking/${data?.id}`,
@@ -43,4 +58,5 @@ export const {
   useGetAllBookingQuery,
   useUpdateBookingMutation,
   useGetBookingStaticsQuery,
+  useGetAllBookingForAdminQuery,
 } = bookingApi;

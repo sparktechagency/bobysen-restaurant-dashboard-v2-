@@ -1,19 +1,19 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
-import BookingCard from "../../../component/BookingCard/BookingCard";
+import { useState } from "react";
+import ABookingCard from "../../../component/BookingCard/BookingCard";
 
-import ResConfirm from "../../../component/UI/PopConfirm";
 import { DatePicker, Input, Tag } from "antd";
-import ResTable from "../../../component/Table";
-import {
-  useGetAllBookingQuery,
-  useUpdateBookingMutation,
-} from "../../../redux/features/booking/bookingApi";
 import dayjs from "dayjs";
 import { GrView } from "react-icons/gr";
 import { NavLink } from "react-router-dom";
 import { toast } from "sonner";
+import ResTable from "../../../component/Table";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
+import ResConfirm from "../../../component/UI/PopConfirm";
+import {
+  useGetAllBookingQuery,
+  useUpdateBookingMutation,
+} from "../../../redux/features/booking/bookingApi";
 const Booking = () => {
   const [date, setDate] = useState<string | null>(dayjs().format("YYYY-MM-DD"));
   const [searchTerm, setSearchTerm] = useState<string | null>();
@@ -146,7 +146,7 @@ const Booking = () => {
   ];
   return (
     <div>
-      <BookingCard />
+      <ABookingCard />
 
       <div className="flex justify-end gap-x-4 my-4">
         <DatePicker

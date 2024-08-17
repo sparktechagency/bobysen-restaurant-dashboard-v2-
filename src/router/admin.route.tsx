@@ -5,17 +5,20 @@ import AdminDashboard from "../pages/AdminDashboard";
 import Restaurant from "../pages/AdminDashboard/Restaurant";
 import Transaction from "../pages/AdminDashboard/Transaction";
 // import Payment from "../pages/AdminDashboard/Payment";
+import { BsBorderStyle } from "react-icons/bs";
 import { CiSettings } from "react-icons/ci";
 import AboutUs from "../pages/AboutUs";
+
+import ABooking from "../pages/AdminDashboard/ABooking";
 import TopRestaurant from "../pages/AdminDashboard/TopRestaurant";
 import ChangePasswordFrom from "../pages/ChangePasswordForm";
 import Notification from "../pages/Notification";
 import Otp from "../pages/Otp";
 import PrivacyPolicy from "../pages/PrivaryPolicy";
+import Profile from "../pages/Profile";
 import Setting from "../pages/Setting";
 import TermsAndCondition from "../pages/TermsAndCondition";
 import UpdatePassword from "../pages/UpdatePassword";
-import Profile from "../pages/Profile";
 
 export const adminRoute = [
   {
@@ -35,6 +38,12 @@ export const adminRoute = [
     path: "restaurant",
     icon: <FaHome />,
     element: <Restaurant />,
+  },
+  {
+    name: "Booking",
+    path: "booking",
+    icon: <BsBorderStyle />,
+    element: <ABooking />,
   },
   {
     name: "Wallet",
