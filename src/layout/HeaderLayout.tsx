@@ -1,24 +1,24 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { MenuOutlined } from "@ant-design/icons";
-import { IoIosNotifications } from "react-icons/io";
-import user from "../assets/avatar.png";
-import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { Badge, Button } from "antd";
-import { setCollapsed } from "../redux/features/layout/layoutSlice";
+import { useEffect } from "react";
+import { IoIosNotifications } from "react-icons/io";
 import { NavLink, useLocation } from "react-router-dom";
 import { toast } from "sonner";
-import { useGetMyNotificationQuery } from "../redux/features/notification/notificationApi";
-import { TUser, useCurrentUser } from "../redux/features/auth/authSlice";
-import { useEffect } from "react";
+import user from "../assets/avatar.png";
 import { useProfileQuery } from "../redux/features/auth/authApi";
+import { TUser, useCurrentUser } from "../redux/features/auth/authSlice";
+import { setCollapsed } from "../redux/features/layout/layoutSlice";
+import { useGetMyNotificationQuery } from "../redux/features/notification/notificationApi";
+import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import showImage from "../utils/showImage";
 
 const HeaderLayout = () => {
   const dispatch = useAppDispatch();
   const { data: notficationData } = useGetMyNotificationQuery({ read: false });
   const User: TUser | null = useAppSelector(useCurrentUser);
-  const {data:Pdata} = useProfileQuery({})
-
+  const { data: Pdata } = useProfileQuery({});
   const { role }: any = User || {};
   const notification: any = useAppSelector(
     (state) => state.notification.notification
@@ -53,7 +53,7 @@ const HeaderLayout = () => {
             .split(/[/ -]/)
             .map((part) => part.toUpperCase())
             .join(" ")} */}
-          {role.toUpperCase()}  Dashboard
+          {role.toUpperCase()} Dashboard
         </h1>
       </div>
       <div className="flex items-center  gap-x-6">
@@ -65,7 +65,7 @@ const HeaderLayout = () => {
 
         <NavLink to={`/${role}/profile`}>
           <img
-            src={ Pdata?.data?.image ? showImage(Pdata?.data?.image) : user}
+            src={Pdata?.data?.image ? showImage(Pdata?.data?.image) : user}
             width={40}
             className="rounded-full object-cover"
             alt=""

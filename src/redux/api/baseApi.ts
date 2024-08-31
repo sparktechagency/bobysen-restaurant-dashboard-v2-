@@ -13,7 +13,7 @@ import { logout, setUser } from "../features/auth/authSlice";
 import { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "http://192.168.10.138:5005/api/v1",
+  baseUrl: "https://api.bookatable.mu/api/v1",
   credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const otpToken = sessionStorage.getItem("token");
@@ -49,7 +49,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
     //console.log("Sending refresh token");
 
     const res = await fetch(
-      "http://192.168.10.138:5005/api/v1/auth/refresh-token",
+      "https://api.bookatable.mu/api/v1/auth/refresh-token",
       {
         method: "POST",
         credentials: "include",

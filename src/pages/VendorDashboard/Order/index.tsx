@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Col, Divider, Row } from "antd";
+import moment from "moment";
 import { useParams } from "react-router-dom";
 import ResTable from "../../../component/Table";
 import VendorOrderCards from "../../../component/VendorOrderCards/VendorOrderCards";
-import { vendorTableTheme } from "../../../themes";
 import { useGetorderByBookingIdQuery } from "../../../redux/features/order/orderApi";
-import { Col, Divider, Row } from "antd";
-import moment from "moment";
+import { vendorTableTheme } from "../../../themes";
 
 const Order = () => {
   const { id } = useParams();
@@ -67,11 +67,6 @@ const Order = () => {
       title: "Date",
       dataIndex: "date",
       key: "date",
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
     },
   ];
   return (
