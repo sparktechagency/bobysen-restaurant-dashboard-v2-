@@ -15,7 +15,7 @@ import {
   useUpdateBookingMutation,
 } from "../../../redux/features/booking/bookingApi";
 const Booking = () => {
-  const [date, setDate] = useState<string | null>(dayjs().format("YYYY-MM-DD"));
+  const [date, setDate] = useState<string | null>();
   const [searchTerm, setSearchTerm] = useState<string | null>();
   const query: Record<string, any> = {};
   if (date) query["date"] = date;
@@ -150,7 +150,7 @@ const Booking = () => {
 
       <div className="flex justify-end gap-x-4 my-4">
         <DatePicker
-          defaultValue={dayjs(dayjs(), "YYYY-MM-DD")}
+          // defaultValue={dayjs(dayjs(), "YYYY-MM-DD")}
           className="w-[200px]"
           size="large"
           onChange={onDateChange}
