@@ -1,7 +1,7 @@
 // import moment from "moment";
 import dayjs from "dayjs";
 
-import { boolean, object, string,coerce } from "zod";
+import { boolean, object, string } from "zod";
 
 const OpeningHoursSchema = object({
   openingTime: string(), // Assuming openingTime and closingTime are strings
@@ -24,8 +24,16 @@ const insertRestaurantSchema = object({
   name: string().min(1, { message: "Restaurant name is required" }),
   address: string().min(1, { message: "Restaurant address is required" }),
   description: string().min(1, { message: "Description is required" }),
-  helpLineNumber1: string({ required_error: "Helpline number is required" }),
-  helpLineNumber2: string().optional(),
+  helpLineNumber1: string({
+    required_error: "Helpline number is required",
+  }).regex(/^5\d{7}$/, {
+    message: "Helpline number must be 8 digits and start with 5",
+  }),
+  helpLineNumber2: string()
+    .regex(/^5\d{7}$/, {
+      message: "Helpline number must be 8 digits and start with 5",
+    })
+    .optional(),
   close: object({
     from: string().optional(),
     to: string().optional(),
@@ -43,8 +51,16 @@ const EditRestaurant = object({
   name: string().min(1, { message: "Restaurant name is required" }),
   address: string().min(1, { message: "Restaurant address is required" }),
   description: string().min(1, { message: "Description is required" }),
-  helpLineNumber1: coerce.number().optional(),
-  helpLineNumber2: coerce.number().optional(),
+  helpLineNumber1: string()
+    .regex(/^5\d{7}$/, {
+      message: "Helpline number must be 8 digits and start with 5",
+    })
+    .optional(),
+  helpLineNumber2: string()
+    .regex(/^5\d{7}$/, {
+      message: "Helpline number must be 8 digits and start with 5",
+    })
+    .optional(),
   close: object({
     from: string().optional(),
     to: string().optional(),
@@ -72,5 +88,5 @@ export const restaurantSchema = {
   insertRestaurantSchema,
   insertTopRestaurant,
   updateTopRestaurant,
-  EditRestaurant
+  EditRestaurant,
 };

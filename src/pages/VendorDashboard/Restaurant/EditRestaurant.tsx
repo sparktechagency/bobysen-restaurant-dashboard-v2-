@@ -1,28 +1,26 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useEffect, useState } from "react";
-import MultiUpload from "../../../component/MultiUpload/MultiUpload";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Col, Divider, Form, Row, Switch, UploadFile } from "antd";
 import { RcFile } from "antd/es/upload";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "sonner";
+import ResForm from "../../../component/Form/FormProvider";
+import ResDatePicker from "../../../component/Form/ResDatePicker";
 import ResInput from "../../../component/Form/ResInput";
 import ResTextArea from "../../../component/Form/ResTextarea";
 import ResTimePicker from "../../../component/Form/ResTimepicker";
+import MultiUpload from "../../../component/MultiUpload/MultiUpload";
+import ErrorResponse from "../../../component/UI/ErrorResponse";
 import {
   useDeleteFileMutation,
   useEditRestaurantMutation,
   useGetSingleRestaurantQuery,
 } from "../../../redux/features/restaurant/restaurantApi";
-import ErrorResponse from "../../../component/UI/ErrorResponse";
-import { toast } from "sonner";
-import ResDatePicker from "../../../component/Form/ResDatePicker";
-import moment from "moment";
-import { days } from "../../../constant/days";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { restaurantSchema } from "../../../schema/restaurant.schema";
-import ResForm from "../../../component/Form/FormProvider";
-import { useNavigate, useParams } from "react-router-dom";
-import dayjs from "dayjs";
-import customParseFormat from "dayjs/plugin/customParseFormat";
 import showImage from "../../../utils/showImage";
 dayjs.extend(customParseFormat);
 
@@ -33,21 +31,23 @@ const EditRestaurant = () => {
   const [editRestaurant] = useEditRestaurantMutation();
   const [deletImages] = useDeleteFileMutation();
   const { data: singleRestaurantData } = useGetSingleRestaurantQuery(id!);
-  console.log(singleRestaurantData)
+  console.log(singleRestaurantData);
 
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   useEffect(() => {
     if (singleRestaurantData?.data?.images) {
-      const formattedImages = singleRestaurantData?.data?.images?.map((image: any) => ({
-        uid: image?._id,
-        name: image?.url,
-        status: 'done',
-        url: showImage(image?.url),
-      }));
-  
+      const formattedImages = singleRestaurantData?.data?.images?.map(
+        (image: any) => ({
+          uid: image?._id,
+          name: image?.url,
+          status: "done",
+          url: showImage(image?.url),
+        })
+      );
+
       setFileList(formattedImages);
     }
-  }, [singleRestaurantData])
+  }, [singleRestaurantData]);
   const onChange = (value: boolean) => {
     setReviewStatus(value);
   };
@@ -63,7 +63,7 @@ const EditRestaurant = () => {
     formData.append("data", JSON.stringify({ ...data, reviewStatus }));
     const toastId = toast.loading("Editing...");
     try {
-await editRestaurant({ id: id, data: formData }).unwrap();
+      await editRestaurant({ id: id, data: formData }).unwrap();
       toast.success("Restaurant edited successfully", {
         id: toastId,
         duration: 2000,
