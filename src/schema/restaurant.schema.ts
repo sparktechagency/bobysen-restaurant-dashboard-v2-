@@ -1,7 +1,7 @@
 // import moment from "moment";
 import dayjs from "dayjs";
 
-import { boolean, object, string } from "zod";
+import { boolean, number, object, string, union } from "zod";
 
 const OpeningHoursSchema = object({
   openingTime: string(), // Assuming openingTime and closingTime are strings
@@ -51,16 +51,15 @@ const EditRestaurant = object({
   name: string().min(1, { message: "Restaurant name is required" }),
   address: string().min(1, { message: "Restaurant address is required" }),
   description: string().min(1, { message: "Description is required" }),
-  helpLineNumber1: string()
-    .regex(/^5\d{7}$/, {
+  helpLineNumber1: union([
+    string().regex(/^5\d{7}$/, {
       message: "Helpline number must be 8 digits and start with 5",
-    })
-    .optional(),
-  helpLineNumber2: string()
-    .regex(/^5\d{7}$/, {
+    }),
+    number().refine((num) => /^5\d{7}$/.test(String(num)), {
       message: "Helpline number must be 8 digits and start with 5",
-    })
-    .optional(),
+    }),
+  ]).optional(),
+  helpLineNumber2: union([string(), number()]).optional(),
   close: object({
     from: string().optional(),
     to: string().optional(),

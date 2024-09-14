@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { zodResolver } from "@hookform/resolvers/zod";
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import { Button, Col, Divider, Form, Row, Switch, UploadFile } from "antd";
 import { RcFile } from "antd/es/upload";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import ResForm from "../../../component/Form/FormProvider";
@@ -30,8 +32,21 @@ const EditRestaurant = () => {
   const [reviewStatus, setReviewStatus] = useState(true);
   const [editRestaurant] = useEditRestaurantMutation();
   const [deletImages] = useDeleteFileMutation();
-  const { data: singleRestaurantData } = useGetSingleRestaurantQuery(id!);
-  console.log(singleRestaurantData);
+  const { data: singleRestaurantData, isSuccess } = useGetSingleRestaurantQuery(
+    id!
+  );
+  const center: any = {
+    lat: Number(singleRestaurantData?.data?.location?.coordinates[1]), // Default latitude for Kuwait
+    lng: Number(singleRestaurantData?.data?.location?.coordinates[0]), // Default longitude for Kuwait
+  };
+  console.log(center);
+  const containerStyle = {
+    width: "800px",
+    height: "300px",
+  };
+  const [map, setMap] = useState(null);
+  const [selectedPosition, setSelectedPosition] = useState(center);
+  const [marker, setMarker] = useState(null);
 
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   useEffect(() => {
@@ -48,10 +63,71 @@ const EditRestaurant = () => {
       setFileList(formattedImages);
     }
   }, [singleRestaurantData]);
+
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: "AIzaSyDhzY2k-tIrpnoBut75TTDJTuE1kURA_fU",
+  });
+
+  // @ts-ignore
+  const onMapClick = useCallback(
+    (event: any) => {
+      const lat = event.latLng.lat();
+      const lng = event.latLng.lng();
+      setSelectedPosition({ lat, lng });
+
+      if (marker) {
+        // @ts-ignore
+        marker.setPosition({ lat, lng });
+      } else {
+        const newMarker = new window.google.maps.Marker({
+          position: { lat, lng },
+          map: map,
+        });
+        // @ts-ignore
+        setMarker(newMarker);
+      }
+    },
+    [marker, map]
+  );
+  // @ts-ignore
+  const onLoad = useCallback((map: any) => {
+    setMap(map);
+    const initialMarker = new window.google.maps.Marker({
+      position: center,
+      map: map,
+    });
+    // @ts-ignore
+    setMarker(initialMarker);
+  }, []);
+
+  const onUnmount = useCallback(() => {
+    setMap(null);
+    if (marker) {
+      // @ts-ignore
+      marker.setMap(null);
+    }
+  }, [marker]);
+
   const onChange = (value: boolean) => {
     setReviewStatus(value);
   };
   const onSubmit = async (data: any) => {
+    const location = {
+      // latitude: currentPosition?.lat,
+      // longitude: currentPosition?.lng,
+      coordinates: [
+        parseFloat(selectedPosition?.lng as any),
+        parseFloat(selectedPosition?.lat as any),
+      ],
+      type: "Point",
+    };
+
+    console.log(location);
+    const formatedData = {
+      ...data,
+      location,
+    };
     const formData = new FormData();
     if (fileList && fileList.length > 0) {
       fileList.forEach((file: any) => {
@@ -60,7 +136,7 @@ const EditRestaurant = () => {
         }
       });
     }
-    formData.append("data", JSON.stringify({ ...data, reviewStatus }));
+    formData.append("data", JSON.stringify({ ...formatedData, reviewStatus }));
     const toastId = toast.loading("Editing...");
     try {
       await editRestaurant({ id: id, data: formData }).unwrap();
@@ -114,13 +190,31 @@ const EditRestaurant = () => {
         resolver={zodResolver(restaurantSchema.EditRestaurant)}
       >
         <Row gutter={[14, 0]}>
-          <Col span={24}>
+          <Col span={12}>
             <Form.Item>
               <MultiUpload
                 fileList={fileList as RcFile[]}
                 setFileList={setFileList}
+                removeFile={deleteFile}
               />
             </Form.Item>
+          </Col>
+
+          <Col span={12}>
+            {isLoaded ? (
+              <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={selectedPosition}
+                zoom={12}
+                onLoad={onLoad}
+                onUnmount={onUnmount}
+                onClick={onMapClick}
+              >
+                <Marker position={selectedPosition} />
+              </GoogleMap>
+            ) : (
+              <></>
+            )}
           </Col>
           <Col span={12}>
             <ResInput

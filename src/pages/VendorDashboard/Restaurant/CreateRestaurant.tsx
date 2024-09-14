@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Col, Divider, Form, Row, Switch, UploadFile } from "antd";
 import { RcFile } from "antd/es/upload";
-import { useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import MultiUpload from "../../../component/MultiUpload/MultiUpload";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import ResForm from "../../../component/Form/FormProvider";
@@ -18,11 +20,21 @@ import { days, defaultTimes } from "../../../constant/days";
 import { TimeValues } from "../../../interface/time";
 import { useAddRestaurantMutation } from "../../../redux/features/restaurant/restaurantApi";
 import { restaurantSchema } from "../../../schema/restaurant.schema";
+const containerStyle = {
+  width: "800px",
+  height: "300px",
+};
+
 const CreateRestaurant = () => {
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [map, setMap] = useState(null);
 
-  const [currentPosition, setCurrentPosition] = useState<any>({});
-  console.log(currentPosition);
+  const center = {
+    lat: -20.3484, // Default latitude for Kuwait
+    lng: 57.5522, // Default longitude for Kuwait
+  };
+  const [selectedPosition, setSelectedPosition] = useState(center);
+  const [marker, setMarker] = useState(null);
   const cloneDays = [...days];
   const values: { [key: string]: TimeValues } = {};
   cloneDays.forEach((day: string) => {
@@ -34,33 +46,56 @@ const CreateRestaurant = () => {
   const onChange = (value: boolean) => {
     setReviewStatus(value);
   };
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: "AIzaSyDhzY2k-tIrpnoBut75TTDJTuE1kURA_fU",
+  });
+  const onMapClick = useCallback(
+    (event: any) => {
+      const lat = event.latLng.lat();
+      const lng = event.latLng.lng();
+      setSelectedPosition({ lat, lng });
 
-  const getCurrentEndpoint = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const { latitude, longitude } = position.coords;
-          setCurrentPosition({ lat: latitude, lng: longitude });
-        },
-        (error) => {
-          console.error("Error getting user location:", error);
-        }
-      );
-    } else {
-      console.error("Geolocation is not supported by this browser.");
-    }
-  };
+      if (marker) {
+        // @ts-ignore
+        marker.setPosition({ lat, lng });
+      } else {
+        const newMarker = new window.google.maps.Marker({
+          position: { lat, lng },
+          map: map,
+        });
+        // @ts-ignore
+        setMarker(newMarker);
+      }
+    },
+    [marker, map]
+  );
 
-  useEffect(() => {
-    getCurrentEndpoint();
+  const onLoad = useCallback((map: any) => {
+    setMap(map);
+    const initialMarker = new window.google.maps.Marker({
+      position: center,
+      map: map,
+    });
+    // @ts-ignore
+    setMarker(initialMarker);
   }, []);
+
+  const onUnmount = useCallback(() => {
+    setMap(null);
+    if (marker) {
+      // @ts-ignore
+      marker.setMap(null);
+    }
+  }, [marker]);
+
   const onSubmit = async (data: any) => {
     const location = {
-      latitude: currentPosition?.lat,
-      longitude: currentPosition?.lng,
+      // latitude: currentPosition?.lat,
+      // longitude: currentPosition?.lng,
       coordinates: [
-        parseFloat(currentPosition?.lng),
-        parseFloat(currentPosition?.lat),
+        parseFloat(selectedPosition?.lng as any),
+        parseFloat(selectedPosition?.lat as any),
       ],
     };
     const formatedData = {
@@ -69,8 +104,8 @@ const CreateRestaurant = () => {
     };
 
     // check at least 5 images
-    if (fileList.length !== 5) {
-      toast.error("Please select 5 image before submitting..");
+    if (fileList.length !== 2) {
+      toast.error("Please select 2 image before submitting..");
       return;
     }
     const toastId = toast.loading("Creating new restaurant...");
@@ -101,13 +136,30 @@ const CreateRestaurant = () => {
         resolver={zodResolver(restaurantSchema.insertRestaurantSchema)}
       >
         <Row gutter={[14, 0]}>
-          <Col span={24}>
+          <Col span={12}>
             <Form.Item>
               <MultiUpload
                 fileList={fileList as RcFile[]}
                 setFileList={setFileList}
               />
             </Form.Item>
+          </Col>
+
+          <Col span={12}>
+            {isLoaded ? (
+              <GoogleMap
+                mapContainerStyle={containerStyle}
+                center={selectedPosition}
+                zoom={12}
+                onLoad={onLoad}
+                onUnmount={onUnmount}
+                onClick={onMapClick}
+              >
+                <Marker position={selectedPosition} />
+              </GoogleMap>
+            ) : (
+              <></>
+            )}
           </Col>
           <Col span={12}>
             <ResInput

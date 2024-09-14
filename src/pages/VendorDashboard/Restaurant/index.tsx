@@ -9,7 +9,6 @@ import { useGetAllRestaurantsQuery } from "../../../redux/features/restaurant/re
 
 const VendorRestaurant = () => {
   const [show, setshow] = useState<boolean>(false);
-
   const query = {};
   const { data: restaurantData } = useGetAllRestaurantsQuery(query);
   //console.log(restaurantData);
@@ -79,7 +78,7 @@ const VendorRestaurant = () => {
   return (
     <div>
       <h1 className="text-32 font-600 mb-4 text-primary">Restaurant</h1>
-      {restaurantData?.data?.length === 0 && (
+      {restaurantData?.data?.length === 2 && (
         <div className="flex justify-end mb-4">
           <Button
             onClick={handleCreateRestaurant}
