@@ -67,7 +67,7 @@ const Banner = () => {
   return (
     <div>
       <ResModal title="Add banner" showModal={show} setShowModal={setShow}>
-        <CreateModal />
+        <CreateModal setshow={setShow} />
       </ResModal>
       <div className="flex justify-end mb-2">
         <Button
