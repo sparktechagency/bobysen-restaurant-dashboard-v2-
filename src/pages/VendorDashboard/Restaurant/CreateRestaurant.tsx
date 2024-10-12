@@ -7,7 +7,12 @@ import { useCallback, useState } from "react";
 import MultiUpload from "../../../component/MultiUpload/MultiUpload";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import {
+  Autocomplete,
+  GoogleMap,
+  Marker,
+  useJsApiLoader,
+} from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import ResForm from "../../../component/Form/FormProvider";
@@ -46,10 +51,13 @@ const CreateRestaurant = () => {
   const onChange = (value: boolean) => {
     setReviewStatus(value);
   };
+  const libraries: any = ["places"];
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyDhzY2k-tIrpnoBut75TTDJTuE1kURA_fU",
+    libraries,
   });
+
   const onMapClick = useCallback(
     (event: any) => {
       const lat = event.latLng.lat();
@@ -104,7 +112,7 @@ const CreateRestaurant = () => {
     };
 
     // check at least 5 images
-    if (fileList.length !== 2) {
+    if (fileList.length <= 2) {
       toast.error("Please select 2 image before submitting..");
       return;
     }
@@ -171,13 +179,15 @@ const CreateRestaurant = () => {
             />
           </Col>
           <Col span={12}>
-            <ResInput
-              size="large"
-              label="Enter Restaurant address"
-              type="text"
-              name="address"
-              placeholder="type restaurant address"
-            />
+            <Autocomplete>
+              <ResInput
+                size="large"
+                label="Enter Restaurant Address"
+                type="text"
+                name="address"
+                placeholder="type address here"
+              />
+            </Autocomplete>
           </Col>
           <Col span={24}>
             <ResTextArea

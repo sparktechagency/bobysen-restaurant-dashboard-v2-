@@ -2,12 +2,17 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { zodResolver } from "@hookform/resolvers/zod";
-import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
+import {
+  Autocomplete,
+  GoogleMap,
+  Marker,
+  useJsApiLoader,
+} from "@react-google-maps/api";
 import { Button, Col, Divider, Form, Row, Switch, UploadFile } from "antd";
 import { RcFile } from "antd/es/upload";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import ResForm from "../../../component/Form/FormProvider";
@@ -35,6 +40,7 @@ const EditRestaurant = () => {
   const { data: singleRestaurantData, isSuccess } = useGetSingleRestaurantQuery(
     id!
   );
+  const autocompleteRef = useRef<any>(null);
   const center: any = {
     lat: Number(singleRestaurantData?.data?.location?.coordinates[1]), // Default latitude for Kuwait
     lng: Number(singleRestaurantData?.data?.location?.coordinates[0]), // Default longitude for Kuwait
@@ -67,8 +73,27 @@ const EditRestaurant = () => {
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyDhzY2k-tIrpnoBut75TTDJTuE1kURA_fU",
+    libraries: ["places"],
   });
+  // Handle place selection
+  const handlePlaceSelect = () => {
+    const place = autocompleteRef.current.getPlace();
+    if (place && place.formatted_address) {
+      // Manually update the input value
+      const address = place.formatted_address;
+      // You can now update the state/form value using setValue or directly into the input
+      autocompleteRef.current.input.value = address;
+    }
+  };
 
+  useEffect(() => {
+    if (autocompleteRef.current) {
+      const autocomplete = new window.google.maps.places.Autocomplete(
+        autocompleteRef.current.input
+      );
+      autocomplete.addListener("place_changed", handlePlaceSelect);
+    }
+  }, []);
   // @ts-ignore
   const onMapClick = useCallback(
     (event: any) => {
@@ -226,13 +251,15 @@ const EditRestaurant = () => {
             />
           </Col>
           <Col span={12}>
-            <ResInput
-              size="large"
-              label="Enter Restaurant address"
-              type="text"
-              name="address"
-              placeholder="type restaurant address"
-            />
+            <Autocomplete>
+              <ResInput
+                size="large"
+                label="Enter Restaurant address"
+                type="text"
+                name="address"
+                placeholder="type restaurant address"
+              />
+            </Autocomplete>
           </Col>
           <Col span={24}>
             <ResTextArea

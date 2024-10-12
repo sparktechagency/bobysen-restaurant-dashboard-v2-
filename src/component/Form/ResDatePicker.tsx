@@ -6,6 +6,7 @@ import { Controller } from "react-hook-form";
 
 interface InputProps {
   name: string;
+  className?: string;
   label?: string;
   size?: SizeType;
   placeholder?: string;
@@ -18,6 +19,7 @@ const ResDatePicker = ({
   name,
   label,
   size,
+  className,
   placeholder,
   labelColor = "black",
   format = "YYYY-MM-DD HH:mm",
@@ -33,6 +35,7 @@ const ResDatePicker = ({
           help={error ? error.message : ""}
         >
           <DatePicker
+            className={className}
             showTime={showTime}
             {...field}
             id={name}

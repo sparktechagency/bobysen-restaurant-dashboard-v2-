@@ -30,6 +30,7 @@
     "socket.io-client": "^4.7.5",
     "sonner": "^1.4.41",
     "sweetalert2": "^11.6.13",
+    "use-places-autocomplete": "^4.0.1",
     "zod": "^3.22.4"
   },
   "devDependencies": {

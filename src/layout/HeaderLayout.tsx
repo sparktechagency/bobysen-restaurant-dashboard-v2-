@@ -19,6 +19,7 @@ const HeaderLayout = () => {
   const { data: notficationData } = useGetMyNotificationQuery({ read: false });
   const User: TUser | null = useAppSelector(useCurrentUser);
   const { data: Pdata } = useProfileQuery({});
+  console.log(Pdata);
   const { role }: any = User || {};
   const notification: any = useAppSelector(
     (state) => state.notification.notification

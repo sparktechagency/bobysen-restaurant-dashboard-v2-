@@ -1,5 +1,5 @@
-import { FaHome } from "react-icons/fa";
-import { MdPeopleOutline } from "react-icons/md";
+import { FaCoins, FaHome } from "react-icons/fa";
+import { MdEventNote, MdPeopleOutline } from "react-icons/md";
 import { RiMoneyDollarCircleLine } from "react-icons/ri";
 import AdminDashboard from "../pages/AdminDashboard";
 import Restaurant from "../pages/AdminDashboard/Restaurant";
@@ -12,6 +12,8 @@ import AboutUs from "../pages/AboutUs";
 import { ImPageBreak } from "react-icons/im";
 import ABooking from "../pages/AdminDashboard/ABooking";
 import Banner from "../pages/AdminDashboard/Banner";
+import Event from "../pages/AdminDashboard/Events";
+import Points from "../pages/AdminDashboard/Points";
 import TopRestaurant from "../pages/AdminDashboard/TopRestaurant";
 import ChangePasswordFrom from "../pages/ChangePasswordForm";
 import Notification from "../pages/Notification";
@@ -46,6 +48,18 @@ export const adminRoute = [
     path: "restaurant",
     icon: <FaHome />,
     element: <Restaurant />,
+  },
+  {
+    name: "Events",
+    path: "events",
+    icon: <MdEventNote />,
+    element: <Event />,
+  },
+  {
+    name: "Points Redeem",
+    path: "points",
+    icon: <FaCoins />,
+    element: <Points />,
   },
   {
     name: "Booking",

@@ -1,5 +1,5 @@
 const showImage = (url: string) => {
-  return `https://api.bookatable.mu${url}`;
+  return `${url}`;
 };
 
 export default showImage;

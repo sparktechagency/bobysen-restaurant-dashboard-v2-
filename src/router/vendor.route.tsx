@@ -1,31 +1,33 @@
+import { CiSettings } from "react-icons/ci";
 import {
   MdDashboard,
   MdOutlineCategory,
   MdOutlineTableRestaurant,
   MdRestaurantMenu,
 } from "react-icons/md";
-import { CiSettings } from "react-icons/ci";
-import Setting from "../pages/Setting";
-import Notification from "../pages/Notification";
 import ChangePasswordFrom from "../pages/ChangePasswordForm";
+import Notification from "../pages/Notification";
+import Setting from "../pages/Setting";
 
 import Otp from "../pages/Otp";
 import UpdatePassword from "../pages/UpdatePassword";
 import VendorDashboard from "../pages/VendorDashboard";
+import Order from "../pages/VendorDashboard/Order";
 import VendorRestaurant from "../pages/VendorDashboard/Restaurant";
 import CreateRestaurant from "../pages/VendorDashboard/Restaurant/CreateRestaurant";
-import Order from "../pages/VendorDashboard/Order";
 import Table from "../pages/VendorDashboard/Table";
 
-import AddMenu from "../pages/VendorDashboard/Menu/AddMenu";
-import VendorTransaction from "../pages/VendorDashboard/Transaction";
-import { RiMoneyDollarCircleLine } from "react-icons/ri";
-import MenuCategory from "../pages/VendorDashboard/MenuCategory";
-import Menu from "../pages/VendorDashboard/Menu";
-import Profile from "../pages/Profile";
 import { BsBorderStyle } from "react-icons/bs";
-import EditRestaurant from "../pages/VendorDashboard/Restaurant/EditRestaurant";
+import { RiMoneyDollarCircleLine } from "react-icons/ri";
+import Profile from "../pages/Profile";
 import Booking from "../pages/VendorDashboard/Booking";
+import Menu from "../pages/VendorDashboard/Menu";
+import AddMenu from "../pages/VendorDashboard/Menu/AddMenu";
+import MenuCategory from "../pages/VendorDashboard/MenuCategory";
+import EditRestaurant from "../pages/VendorDashboard/Restaurant/EditRestaurant";
+import VendorTransaction from "../pages/VendorDashboard/Transaction";
+import Vevent from "../pages/VendorDashboard/Vevent";
+import Ebooking from "../pages/VendorDashboard/Vevent/Ebooking";
 
 export const vendorRoute = [
   {
@@ -45,6 +47,16 @@ export const vendorRoute = [
     path: "booking",
     icon: <BsBorderStyle />,
     element: <Booking />,
+  },
+  {
+    name: "Event",
+    path: "vendor-event",
+    icon: <BsBorderStyle />,
+    element: <Vevent />,
+  },
+  {
+    path: "booking/:id",
+    element: <Ebooking />,
   },
   {
     path: "order/:id",

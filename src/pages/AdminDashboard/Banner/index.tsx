@@ -47,6 +47,11 @@ const Banner = () => {
       ), // Correct the tag and provide an 'alt' attribute for the image
     },
     {
+      title: "Restaurant",
+      dataIndex: "restaurant",
+      render: (data: any) => <p>{data?.name}</p>, // Correct the tag and provide an 'alt' attribute for the image
+    },
+    {
       title: "Action",
       key: "action",
       render: (data: any, index: number) => {
