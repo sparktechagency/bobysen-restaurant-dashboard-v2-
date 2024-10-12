@@ -14,7 +14,7 @@ const Ebooking = () => {
     isLoading,
     isFetching,
   } = useGetAllBookingQuery(query);
-
+  console.log(bookingData, query);
   const column = [
     // {
     //   title: "#SL",
