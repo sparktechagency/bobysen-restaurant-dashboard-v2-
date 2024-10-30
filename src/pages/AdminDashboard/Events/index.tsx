@@ -31,7 +31,7 @@ const Event = () => {
   const handleDeleteEvent = async (data: any) => {
     const toastId = toast.loading("Deleting...");
     try {
-      await deleteEvent({ id: data, body: { isDeleted: true } }).unwrap();
+      await deleteEvent({ id: data, body: { isActive: false } }).unwrap();
       toast.success("Event deleted successfully", {
         id: toastId,
         duration: 2000,
