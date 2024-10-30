@@ -2,12 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Autocomplete,
-  GoogleMap,
-  Marker,
-  useJsApiLoader,
-} from "@react-google-maps/api";
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import { Button, Col, Divider, Form, Row, Switch, UploadFile } from "antd";
 import { RcFile } from "antd/es/upload";
 import dayjs from "dayjs";
@@ -251,15 +246,15 @@ const EditRestaurant = () => {
             />
           </Col>
           <Col span={12}>
-            <Autocomplete>
-              <ResInput
-                size="large"
-                label="Enter Restaurant address"
-                type="text"
-                name="address"
-                placeholder="type restaurant address"
-              />
-            </Autocomplete>
+            {/* <Autocomplete> */}
+            <ResInput
+              size="large"
+              label="Enter Restaurant address"
+              type="text"
+              name="address"
+              placeholder="type restaurant address"
+            />
+            {/* </Autocomplete> */}
           </Col>
           <Col span={24}>
             <ResTextArea

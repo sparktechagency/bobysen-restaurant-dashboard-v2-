@@ -1,8 +1,13 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { DeleteOutlined, PlusCircleOutlined } from "@ant-design/icons";
+import {
+  DeleteOutlined,
+  EyeOutlined,
+  PlusCircleOutlined,
+} from "@ant-design/icons";
 import { Button, DatePicker, DatePickerProps } from "antd";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "sonner";
 import EventCard from "../../../component/EventCard/EventCard";
 import ResModal from "../../../component/Modal/Modal";
@@ -17,11 +22,11 @@ import CreateEvents from "./createEvents";
 
 const Event = () => {
   const [show, setShow] = useState(false);
+
   const [date, setDate] = useState("");
   const query: Record<string, any> = {};
   if (date) query["date"] = date;
   const { data: Edata, isFetching } = useGetAllEventsQuery(query);
-  console.log(Edata, query);
   const [deleteEvent] = useUpdateEventsMutation();
   const handleDeleteEvent = async (data: any) => {
     const toastId = toast.loading("Deleting...");
@@ -48,10 +53,14 @@ const Event = () => {
       render: (data: any) => <p>{data?.name}</p>, // Ensure you're safely accessing data
     },
     {
-      title: "Date",
-      dataIndex: "date",
-      key: "date",
-      //   render: (date) => <p>{new Date(date).toLocaleDateString()}</p>, // Format date as needed
+      title: "Start Date",
+      dataIndex: "startDate",
+      key: "startDate",
+    },
+    {
+      title: "End Date",
+      dataIndex: "endDate",
+      key: "endDate",
     },
 
     {
@@ -61,6 +70,9 @@ const Event = () => {
         return (
           <div className="flex gap-x-4">
             {/* Uncomment and implement the EditOutlined icon functionality as needed */}
+            <Link to={`/admin/events-booking/${data?._id}`}>
+              <EyeOutlined className="cursor-pointer" key={index} />
+            </Link>
             <ResConfirm
               description="This action cannot be undone!"
               handleOk={() => handleDeleteEvent(data?._id)}
@@ -78,7 +90,12 @@ const Event = () => {
   };
   return (
     <div>
-      <ResModal showModal={show} setShowModal={setShow} title="Create an event">
+      <ResModal
+        showModal={show}
+        setShowModal={setShow}
+        title="Create an event"
+        width={700}
+      >
         <CreateEvents setShow={setShow} />
       </ResModal>
       <EventCard data={Edata?.data} />

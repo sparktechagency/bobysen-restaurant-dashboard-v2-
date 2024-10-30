@@ -36,6 +36,14 @@ const eventApi = baseApi.injectEndpoints({
       }),
       providesTags: [tagTypes.event],
     }),
+    getCustomerEventPayments: builder.query({
+      query: (query) => ({
+        url: `/events-payment`,
+        method: "GET",
+        params: query,
+      }),
+      providesTags: [tagTypes.event],
+    }),
   }),
 });
 
@@ -44,4 +52,5 @@ export const {
   useGetAllEventsQuery,
   useUpdateEventsMutation,
   useGetEventsForVendorQuery,
+  useGetCustomerEventPaymentsQuery,
 } = eventApi;

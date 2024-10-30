@@ -7,12 +7,7 @@ import { useCallback, useState } from "react";
 import MultiUpload from "../../../component/MultiUpload/MultiUpload";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Autocomplete,
-  GoogleMap,
-  Marker,
-  useJsApiLoader,
-} from "@react-google-maps/api";
+import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import ResForm from "../../../component/Form/FormProvider";
@@ -179,15 +174,15 @@ const CreateRestaurant = () => {
             />
           </Col>
           <Col span={12}>
-            <Autocomplete>
-              <ResInput
-                size="large"
-                label="Enter Restaurant Address"
-                type="text"
-                name="address"
-                placeholder="type address here"
-              />
-            </Autocomplete>
+            {/* <Autocomplete> */}
+            <ResInput
+              size="large"
+              label="Enter Restaurant Address"
+              type="text"
+              name="address"
+              placeholder="type address here"
+            />
+            {/* </Autocomplete> */}
           </Col>
           <Col span={24}>
             <ResTextArea

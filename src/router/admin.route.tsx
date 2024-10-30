@@ -13,6 +13,7 @@ import { ImPageBreak } from "react-icons/im";
 import ABooking from "../pages/AdminDashboard/ABooking";
 import Banner from "../pages/AdminDashboard/Banner";
 import Event from "../pages/AdminDashboard/Events";
+import EventBookingDetails from "../pages/AdminDashboard/Events/EventBookingDetails";
 import Points from "../pages/AdminDashboard/Points";
 import TopRestaurant from "../pages/AdminDashboard/TopRestaurant";
 import ChangePasswordFrom from "../pages/ChangePasswordForm";
@@ -54,6 +55,10 @@ export const adminRoute = [
     path: "events",
     icon: <MdEventNote />,
     element: <Event />,
+  },
+  {
+    path: "events-booking/:id",
+    element: <EventBookingDetails />,
   },
   {
     name: "Points Redeem",
