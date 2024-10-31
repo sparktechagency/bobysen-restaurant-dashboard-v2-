@@ -23,9 +23,14 @@ const Vevent = () => {
       key: "title",
     },
     {
-      title: "Date",
-      dataIndex: "date",
-      key: "date",
+      title: "Start Date",
+      dataIndex: "startDate",
+      key: "startDate",
+    },
+    {
+      title: "End Date",
+      dataIndex: "endDate",
+      key: "endDate",
     },
 
     {

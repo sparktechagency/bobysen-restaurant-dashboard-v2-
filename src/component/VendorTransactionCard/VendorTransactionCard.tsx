@@ -10,7 +10,7 @@ const VendorTransactionCard = ({ data }: any) => {
           <img src={dollarLogo} alt="" />
           <div className="font-600 ">
             <h1 className="text-end text-primary text-32">
-              $ {data?.amount || 0}
+              Rs. {data?.amount || 0}
             </h1>
             <p className="text-24">Total sells</p>
           </div>
@@ -22,7 +22,7 @@ const VendorTransactionCard = ({ data }: any) => {
           <div className="font-600 ">
             <h1 className="text-end text-primary text-32">
               {" "}
-              $ {data?.due || 0}{" "}
+              Rs. {data?.due || 0}{" "}
             </h1>
             <p className="text-24">Total Due</p>
           </div>
@@ -34,7 +34,7 @@ const VendorTransactionCard = ({ data }: any) => {
           <div className="font-600 ">
             <h1 className="text-end text-primary text-32">
               {" "}
-              $ {data?.totalPaid || 0}{" "}
+              Rs. {data?.totalPaid || 0}{" "}
             </h1>
             <p className="text-24">Total Paid</p>
           </div>
