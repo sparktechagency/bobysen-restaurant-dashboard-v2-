@@ -35,9 +35,10 @@ const createVendorSchema = z.object({
   email: z.string({ required_error: "Vendor email  is Required" }),
   password: z.string({ required_error: "Vendor password is Required" }),
   phoneNumber: z.coerce
-    .number({ required_error: "Vendor phone number is Required" })
-    .refine((value) => value.toString().length >= 11, {
-      message: "Vendor phone number must be at least 11 digits long",
+    .number({ required_error: "Vendor phone number is required" })
+    .refine((value) => /^5\d{6,}$/.test(value.toString()), {
+      message:
+        "Vendor phone number must start with 5 and be at least 7 digits long",
     }),
 });
 const EditVendorSchema = z.object({
@@ -46,9 +47,10 @@ const EditVendorSchema = z.object({
     .min(1, { message: "Vendor name is Required" }),
 
   phoneNumber: z.coerce
-    .number({ required_error: "Vendor phone number is Required" })
-    .refine((value) => value.toString().length >= 11, {
-      message: "Vendor phone number must be at least 11 digits long",
+    .number({ required_error: "Vendor phone number is required" })
+    .refine((value) => /^5\d{6,}$/.test(value.toString()), {
+      message:
+        "Vendor phone number must start with 5 and be at least 7 digits long",
     }),
 });
 
