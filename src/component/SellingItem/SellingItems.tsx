@@ -21,7 +21,7 @@ const SellingItems = ({ data }: any) => {
             </p>
           </div>
         </div>
-        <h1 className="text-24 font-600">${data?.price}</h1>
+        <h1 className="text-24 font-600">Rs. {data?.price}</h1>
       </div>
       <Divider className="bg-deepGray h-[2px]" />
     </div>
