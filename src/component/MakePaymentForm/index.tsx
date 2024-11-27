@@ -1,25 +1,25 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "antd";
-import ResForm from "../Form/FormProvider";
-import ResInput from "../Form/ResInput";
+import { toast } from "sonner";
 import {
   useGetSingleWalletQuery,
   useSentVendorAmountMutation,
 } from "../../redux/features/wallet/walletApi";
-import ErrorResponse from "../UI/ErrorResponse";
-import { toast } from "sonner";
-import ResSelect from "../Form/ResSelect";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { walletValidationSchema } from "../../schema/wallet.schema";
+import ResForm from "../Form/FormProvider";
+import ResInput from "../Form/ResInput";
+import ResSelect from "../Form/ResSelect";
+import ErrorResponse from "../UI/ErrorResponse";
 
 const MakePaymentForm = ({ id, setshow }: any) => {
   const { data: walletData } = useGetSingleWalletQuery(id);
   const [sendAmount] = useSentVendorAmountMutation();
   const onSubmit = async (data: any) => {
+    console.log(data);
     const toastId = toast.loading("Sending..");
     if (data?.amount > walletData?.data?.due) {
       toast.error("Influence balance", { id: toastId, duration: 2000 });
-
       return;
     }
     try {
@@ -69,7 +69,7 @@ const MakePaymentForm = ({ id, setshow }: any) => {
         />
         <div className="flex gap-x-2 font-600 text-20 mb-4">
           <p>Available Balance:</p>
-          <p className="text-primary">${walletData?.data?.due}</p>
+          <p className="text-primary">Rs.{walletData?.data?.due}</p>
         </div>
         <Button
           disabled={walletData?.data?.due <= 0}
