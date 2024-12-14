@@ -49,7 +49,7 @@ const CreateRestaurant = () => {
   const libraries: any = ["places"];
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: "AIzaSyDhzY2k-tIrpnoBut75TTDJTuE1kURA_fU",
+    googleMapsApiKey: "AIzaSyBFi80uuJIWkkLCpodFa8oXmD8XD_h8LMc",
     libraries,
   });
 
