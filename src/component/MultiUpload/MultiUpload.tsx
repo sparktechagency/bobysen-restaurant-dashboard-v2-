@@ -50,12 +50,16 @@ const MultiUpload = ({ fileList, setFileList, removeFile }: TfileProps) => {
     }
     return true;
   };
+  const beforeUpload = (file: FileType) => {
+    return false; // This will prevent Ant Design's default upload behavior.
+  };
   return (
     <>
       <Upload
         // action="api/file"
         listType="picture-card"
         fileList={fileList}
+        beforeUpload={beforeUpload}
         onPreview={handlePreview}
         onChange={handleChange}
         onRemove={handleRemove}

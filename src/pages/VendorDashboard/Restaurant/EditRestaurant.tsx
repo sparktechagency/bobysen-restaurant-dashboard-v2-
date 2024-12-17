@@ -50,6 +50,7 @@ const EditRestaurant = () => {
   const [marker, setMarker] = useState(null);
 
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+
   useEffect(() => {
     if (singleRestaurantData?.data?.images) {
       const formattedImages = singleRestaurantData?.data?.images?.map(
@@ -67,7 +68,7 @@ const EditRestaurant = () => {
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: "AIzaSyDhzY2k-tIrpnoBut75TTDJTuE1kURA_fU",
+    googleMapsApiKey: "AIzaSyAu6RiRrpTx0SY5nnFxml5UbOpuHiGNHKI",
     libraries: ["places"],
   });
   // Handle place selection
@@ -233,7 +234,7 @@ const EditRestaurant = () => {
                 <Marker position={selectedPosition} />
               </GoogleMap>
             ) : (
-              <></>
+              <>Loading...</>
             )}
           </Col>
           <Col span={12}>
