@@ -68,7 +68,7 @@ const EditRestaurant = () => {
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: "",
+    googleMapsApiKey: "AIzaSyAu6RiRrpTx0SY5nnFxml5UbOpuHiGNHKI",
     libraries: ["places"],
   });
   // Handle place selection
