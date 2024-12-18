@@ -2,14 +2,14 @@
 import { Button, Form } from "antd";
 import ResForm from "../../../component/Form/FormProvider";
 
-import UseImageUpload from "../../../hooks/useImageUpload";
 import ResInput from "../../../component/Form/ResInput";
+import UseImageUpload from "../../../hooks/useImageUpload";
 
-import { useCreateVendorMutation } from "../../../redux/features/auth/authApi";
-import { toast } from "sonner";
-import ErrorResponse from "../../../component/UI/ErrorResponse";
-import FileUpload from "../../../component/FileUpload";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
+import FileUpload from "../../../component/FileUpload";
+import ErrorResponse from "../../../component/UI/ErrorResponse";
+import { useCreateVendorMutation } from "../../../redux/features/auth/authApi";
 import { authValidationSchema } from "../../../schema/auth.schema";
 
 const CreateVendor = ({ setShow }: any) => {
