@@ -4,6 +4,9 @@ const menuCategorySchema = z.object({
   title: z
     .string({ required_error: "Title is required" })
     .min(1, { message: "Title is required" }),
+  restaurant: z
+    .string({ required_error: "Restaurant is required" })
+    .min(1, { message: "Restaurant is required" }),
 });
 
 const menuSchema = z.object({

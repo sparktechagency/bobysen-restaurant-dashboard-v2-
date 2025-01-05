@@ -13,9 +13,10 @@ const menuApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.menu],
     }),
     getMYmenuCategories: builder.query({
-      query: () => ({
+      query: (query) => ({
         url: `/menu-categories/owner-v2`,
         method: "GET",
+        params: query,
       }),
       providesTags: [tagTypes.menu],
     }),

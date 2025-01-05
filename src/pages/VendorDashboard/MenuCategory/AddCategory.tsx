@@ -1,41 +1,28 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Form } from "antd";
+import { toast } from "sonner";
+import FileUpload from "../../../component/FileUpload";
 import ResForm from "../../../component/Form/FormProvider";
 import ResInput from "../../../component/Form/ResInput";
-import { useAddMenuCategortyMutation } from "../../../redux/features/menu/menuApi";
+import ResSelect from "../../../component/Form/ResSelect";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
-import { toast } from "sonner";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { menuValidationSchema } from "../../../schema/menu.schema";
-import FileUpload from "../../../component/FileUpload";
 import UseImageUpload from "../../../hooks/useImageUpload";
-import { useAppSelector } from "../../../redux/hooks";
-import { useCurrentUser } from "../../../redux/features/auth/authSlice";
-import { useGetAllRestaurantsQuery } from "../../../redux/features/restaurant/restaurantApi";
+import { useAddMenuCategortyMutation } from "../../../redux/features/menu/menuApi";
+import { useGetVendorWiseRestaurantIdQuery } from "../../../redux/features/restaurant/restaurantApi";
+import { menuValidationSchema } from "../../../schema/menu.schema";
 // import ResSelect from "../../../component/Form/ResSelect";
 
 const AddCategory = ({ setShow }: any) => {
   const { setFile, imageUrl, imageFile } = UseImageUpload();
   const [addcategory] = useAddMenuCategortyMutation();
-  const user = useAppSelector(useCurrentUser);
-  const { data: restaurantData } = useGetAllRestaurantsQuery({
-    owner: user?.userId,
+  const { data: ResData } = useGetVendorWiseRestaurantIdQuery({});
+  const options = ResData?.data?.map((data: any) => {
+    return { label: data?.name, value: data?._id };
   });
-  // const options = restaurantData?.data?.map((data: any) => {
-  //   return {
-  //     label: data?.name,
-  //     value: data?._id,
-  //   };
-  // });
   const onSubmit = async (data: any) => {
     const toastId = toast.loading("Createing category....");
-    if (!restaurantData?.data[0]) {
-      toast.error("Please create an restaurant before upload category", {
-        id: toastId,
-        duration: 2000,
-      });
-      return;
-    }
+
     const formData = new FormData();
     if (!imageFile) {
       toast.error("Please select an category image", {
@@ -45,10 +32,7 @@ const AddCategory = ({ setShow }: any) => {
       return;
     }
     formData.append("file", imageFile);
-    formData.append(
-      "data",
-      JSON.stringify({ ...data, restaurant: restaurantData?.data[0]?._id })
-    );
+    formData.append("data", JSON.stringify(data));
     try {
       await addcategory(formData).unwrap();
       toast.success("Menu category added successfully", {
@@ -69,13 +53,13 @@ const AddCategory = ({ setShow }: any) => {
         <Form.Item className="flex justify-center">
           <FileUpload imageUrl={imageUrl} setSelectedFile={setFile} />
         </Form.Item>
-        {/* <ResSelect
+        <ResSelect
           options={options}
           placeholder="Select restaurant"
           name="restaurant"
           size="large"
           label="Select Restaurant"
-        /> */}
+        />
         <ResInput
           type="text"
           label="Enter Category Title"

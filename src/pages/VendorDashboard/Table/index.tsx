@@ -3,25 +3,33 @@ import { useState } from "react";
 import ResTable from "../../../component/Table";
 import TableCards from "../../../component/TableCards/TableCards";
 
-import { Button } from "antd";
 import {
   // DeleteOutlined,
   EditOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
+import { Button, Select } from "antd";
 import { vendorTableTheme } from "../../../themes/tableThemes";
 // import ResConfirm from "../../../component/UI/PopConfirm";
 import ResModal from "../../../component/Modal/Modal";
+import { useGetVendorWiseRestaurantIdQuery } from "../../../redux/features/restaurant/restaurantApi";
+import { useGetTablesQuery } from "../../../redux/features/table/tableApi";
+import { setTable } from "../../../redux/features/table/tableSlice";
+import { useAppDispatch } from "../../../redux/hooks";
 import CreateTable from "./CreateTable";
 import EditTable from "./EditTable";
-import { useGetTablesQuery } from "../../../redux/features/table/tableApi";
-import { useAppDispatch } from "../../../redux/hooks";
-import { setTable } from "../../../redux/features/table/tableSlice";
 
 const Table = () => {
   const [show, setShow] = useState<boolean>(false);
+  const { data: ResData } = useGetVendorWiseRestaurantIdQuery({});
+  const [restaurantId, setRestaurantId] = useState<String | null>(null);
+  const query: Record<string, any> = {};
+  const handleChange = (value: string) => {
+    setRestaurantId(value);
+  };
+  if (restaurantId) query["restaurant"] = restaurantId;
+  const { data: tableData, isLoading } = useGetTablesQuery(query);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
-  const { data: tableData, isLoading } = useGetTablesQuery(undefined);
 
   // const handleBookedTable = (id: string, type: string) => {
   //   //console.log(id, type);
@@ -121,7 +129,15 @@ const Table = () => {
       </ResModal>
       <TableCards tableData={tableData} />
       {tableData?.data?._id && (
-        <div className="flex justify-end mb-4">
+        <div className="flex justify-end mb-4 gap-x-2">
+          <Select
+            style={{ width: 200, height: 33 }}
+            placeholder="Select Restaurant"
+            onChange={handleChange}
+            options={ResData?.data?.map((data: any) => {
+              return { label: data?.name, value: data?._id };
+            })}
+          />
           <Button
             onClick={() => setShow((prev) => !prev)}
             className="bg-primary text-white font-500"

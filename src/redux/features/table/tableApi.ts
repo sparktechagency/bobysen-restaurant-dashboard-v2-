@@ -13,9 +13,10 @@ const tableApi = baseApi.injectEndpoints({
       invalidatesTags: [tagTypes.table],
     }),
     getTables: builder.query({
-      query: () => ({
+      query: (query) => ({
         url: `/tables/owner`,
         method: "GET",
+        params: query,
       }),
       providesTags: [tagTypes.table],
     }),

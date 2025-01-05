@@ -49,7 +49,7 @@ const CreateRestaurant = () => {
   const libraries: any = ["places"];
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
-    googleMapsApiKey: "",
+    googleMapsApiKey: "AIzaSyAu6RiRrpTx0SY5nnFxml5UbOpuHiGNHKI",
     libraries,
   });
 
@@ -107,7 +107,7 @@ const CreateRestaurant = () => {
     };
 
     // check at least 5 images
-    if (fileList.length <= 2) {
+    if (fileList.length <= 1) {
       toast.error("Please select 2 image before submitting..");
       return;
     }

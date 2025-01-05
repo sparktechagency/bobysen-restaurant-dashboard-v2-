@@ -1,23 +1,36 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Button, Form } from "antd";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Form, Select } from "antd";
+import { useState } from "react";
+import { toast } from "sonner";
+import FileUpload from "../../../component/FileUpload";
 import ResForm from "../../../component/Form/FormProvider";
-import UseImageUpload from "../../../hooks/useImageUpload";
 import ResInput from "../../../component/Form/ResInput";
 import ResSelect from "../../../component/Form/ResSelect";
 import ResTextArea from "../../../component/Form/ResTextarea";
+import ErrorResponse from "../../../component/UI/ErrorResponse";
+import UseImageUpload from "../../../hooks/useImageUpload";
 import {
   useAddMenuMutation,
   useGetMYmenuCategoriesQuery,
 } from "../../../redux/features/menu/menuApi";
-import { useGetAllRestaurantsQuery } from "../../../redux/features/restaurant/restaurantApi";
-import ErrorResponse from "../../../component/UI/ErrorResponse";
-import { toast } from "sonner";
-import FileUpload from "../../../component/FileUpload";
-import { zodResolver } from "@hookform/resolvers/zod";
+import {
+  useGetAllRestaurantsQuery,
+  useGetVendorWiseRestaurantIdQuery,
+} from "../../../redux/features/restaurant/restaurantApi";
 import { menuValidationSchema } from "../../../schema/menu.schema";
 const AddMenu = ({ setShow }: any) => {
-  const { data: categoryData } = useGetMYmenuCategoriesQuery(undefined);
+  const [restaurantId, setRestaurantId] = useState<String>();
+  const query: Record<string, any> = {};
+  if (restaurantId) query["restaurant"] = restaurantId;
+  const { data: categoryData } = useGetMYmenuCategoriesQuery(query);
+  console.log(categoryData, restaurantId);
+  const { data: ResData } = useGetVendorWiseRestaurantIdQuery({});
+  const handleChange = (value: string) => {
+    console.log(value);
+    setRestaurantId(value);
+  };
   const category = categoryData?.data?.map((data: any) => {
     return {
       label: data?.title,
@@ -58,6 +71,7 @@ const AddMenu = ({ setShow }: any) => {
     { label: "true", value: "true" },
     { label: "false", value: "false" },
   ];
+
   return (
     <ResForm
       onSubmit={onSubmit}
@@ -66,6 +80,15 @@ const AddMenu = ({ setShow }: any) => {
       <Form.Item className="flex justify-center">
         <FileUpload imageUrl={imageUrl} setSelectedFile={setFile} />
       </Form.Item>
+      <p className="mb-2">Select Restaurant</p>
+      <Select
+        style={{ width: "100%", height: 40, marginBottom: "10px" }}
+        placeholder="Select Restaurant"
+        onChange={handleChange}
+        options={ResData?.data?.map((data: any) => {
+          return { label: data?.name, value: data?._id };
+        })}
+      />
       <ResInput
         type="text"
         label="Enter Menu Name"

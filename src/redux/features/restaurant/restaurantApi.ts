@@ -12,6 +12,14 @@ const restaurantsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.restaurant],
     }),
+    getVendorWiseRestaurantId: builder.query({
+      query: (query) => ({
+        url: "/restaurants/dashboard/owner/restaurant",
+        method: "GET",
+        query: query,
+      }),
+      providesTags: [tagTypes.restaurant],
+    }),
     EditRestaurant: builder.mutation({
       query: (body) => ({
         url: `/restaurants/${body?.id}`,
@@ -97,4 +105,5 @@ export const {
   useGetAllTopRestaurantsQuery,
   useUpdateTopRestaurantMutation,
   useGetSingleTopRestaurantQuery,
+  useGetVendorWiseRestaurantIdQuery,
 } = restaurantsApi;

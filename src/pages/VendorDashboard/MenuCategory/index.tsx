@@ -1,21 +1,35 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { EditOutlined, PlusCircleOutlined } from "@ant-design/icons";
-import { Button } from "antd";
+import { Button, Select } from "antd";
+import moment from "moment";
 import { useState } from "react";
 import ResModal from "../../../component/Modal/Modal";
-import AddCategory from "./AddCategory";
 import ResTable from "../../../component/Table";
-import EditCategory from "./EditCategory";
 import { useGetMYmenuCategoriesQuery } from "../../../redux/features/menu/menuApi";
-import { useAppDispatch } from "../../../redux/hooks";
 import { setCategoryDetails } from "../../../redux/features/menu/menuSlice";
-import moment from "moment";
+import { useGetVendorWiseRestaurantIdQuery } from "../../../redux/features/restaurant/restaurantApi";
+import { useAppDispatch } from "../../../redux/hooks";
+import AddCategory from "./AddCategory";
+import EditCategory from "./EditCategory";
 
 const MenuCategory = () => {
   const [show, setShow] = useState<boolean>(false);
+  const [restaurantId, setRestaurantId] = useState<String>();
   const [showEditModal, setshowEditModal] = useState<boolean>(false);
+  const { data: ResData } = useGetVendorWiseRestaurantIdQuery({});
+  const query: Record<string, any> = {};
+  const handleChange = (value: string) => {
+    setRestaurantId(value);
+  };
+  if (restaurantId) query["restaurant"] = restaurantId;
   const dispatch = useAppDispatch();
-  const { data: categoryData } = useGetMYmenuCategoriesQuery(undefined);
+
+  const {
+    data: categoryData,
+    isLoading,
+    isFetching,
+  } = useGetMYmenuCategoriesQuery(query);
+
   const column = [
     {
       title: "#SL",
@@ -27,6 +41,7 @@ const MenuCategory = () => {
       dataIndex: "title",
       key: "title",
     },
+
     {
       title: "Created At",
       dataIndex: "createdAt",
@@ -62,9 +77,6 @@ const MenuCategory = () => {
   });
   return (
     <div>
-      <ResModal title="ADD CATEGORY" setShowModal={setShow} showModal={show}>
-        <AddCategory setShow={setShow} />
-      </ResModal>
       <ResModal
         title="EDIT CATEGORY"
         setShowModal={setshowEditModal}
@@ -72,7 +84,16 @@ const MenuCategory = () => {
       >
         <EditCategory setshowEditModal={setshowEditModal} />
       </ResModal>
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-x-4">
+        <Select
+          style={{ width: 200, height: 40 }}
+          placeholder="Select Restaurant"
+          onChange={handleChange}
+          options={ResData?.data?.map((data: any) => {
+            return { label: data?.name, value: data?._id };
+          })}
+        />
+
         <Button
           onClick={() => setShow((prev) => !prev)}
           className="bg-primary text-white h-[40px] font-500"
@@ -80,10 +101,15 @@ const MenuCategory = () => {
         >
           Add Category
         </Button>
+
+        <ResModal title="ADD CATEGORY" setShowModal={setShow} showModal={show}>
+          <AddCategory setShow={setShow} />
+        </ResModal>
       </div>
       <div className="mt-4">
         <ResTable
           data={data}
+          loading={isLoading || isFetching}
           column={column}
           pagination={{ total: data?.length, pageSize: 10 }}
         />
