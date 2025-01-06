@@ -15,7 +15,6 @@ interface TTableProps {
 }
 const CreateTable = ({ restaurantId, setShow }: TTableProps) => {
   const [addTable] = useAddTableMutation();
-
   const onSubmit = async (data: any) => {
     data.seats = Number(data?.seats);
     const toastId = toast.loading("Creating...");

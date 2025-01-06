@@ -1,11 +1,16 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Col, Row } from "antd";
-import menuLogo from "../../assets/vendorIcon/menu.png";
-import AvailableNowLogo from "../../assets/vendorIcon/menu.png";
+import {
+  default as AvailableNowLogo,
+  default as menuLogo,
+} from "../../assets/vendorIcon/menu.png";
 import { useGetAllMenuQuery } from "../../redux/features/menu/menuApi";
-const MenuHeaderCards = () => {
-  const { data: menuData } = useGetAllMenuQuery(undefined);
-  const { data: activeData } = useGetAllMenuQuery({ available: true });
+const MenuHeaderCards = ({ restaurant }: any) => {
+  const { data: menuData } = useGetAllMenuQuery({ restaurant });
+  const { data: activeData } = useGetAllMenuQuery({
+    available: true,
+    restaurant,
+  });
   return (
     <Row gutter={[16, 16]}>
       <Col span={6}>

@@ -4,17 +4,23 @@ import dayjs from "dayjs";
 import dollarLogo from "../../assets/payment.svg";
 import orderLogo from "../../assets/vendorIcon/order.png";
 import { useGetAllBookingQuery } from "../../redux/features/booking/bookingApi";
-const BookingCard = () => {
-  const { data: totalBooking } = useGetAllBookingQuery({ status: "active" });
+const BookingCard = ({ restaurant }: any) => {
+  const { data: totalBooking } = useGetAllBookingQuery({
+    status: "active",
+    restaurant: restaurant,
+  });
   const { data: totalCanlledBooking } = useGetAllBookingQuery({
     status: "cancelled",
+    restaurant: restaurant,
   });
   const { data: totalClosedBook } = useGetAllBookingQuery({
     status: "closed",
+    restaurant: restaurant,
   });
 
   const { data: todays } = useGetAllBookingQuery({
     date: dayjs().format("YYYY-MM-DD"),
+    restaurant: restaurant,
   });
   return (
     <Row gutter={[16, 16]}>

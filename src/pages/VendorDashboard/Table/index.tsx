@@ -29,6 +29,7 @@ const Table = () => {
   };
   if (restaurantId) query["restaurant"] = restaurantId;
   const { data: tableData, isLoading } = useGetTablesQuery(query);
+  console.log(query);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
   // const handleBookedTable = (id: string, type: string) => {
@@ -128,8 +129,10 @@ const Table = () => {
         <EditTable setShow={setShowEditModal} />
       </ResModal>
       <TableCards tableData={tableData} />
-      {tableData?.data?._id && (
-        <div className="flex justify-end mb-4 gap-x-2">
+
+      {/* {tableData?.data?._id && ( */}
+      <div className="flex justify-end mb-4 gap-x-2">
+        <div className="flex justify-end">
           <Select
             style={{ width: 200, height: 33 }}
             placeholder="Select Restaurant"
@@ -138,15 +141,16 @@ const Table = () => {
               return { label: data?.name, value: data?._id };
             })}
           />
-          <Button
-            onClick={() => setShow((prev) => !prev)}
-            className="bg-primary text-white font-500"
-            icon={<PlusCircleOutlined />}
-          >
-            Create Table
-          </Button>
         </div>
-      )}
+        <Button
+          onClick={() => setShow((prev) => !prev)}
+          className="bg-primary text-white font-500"
+          icon={<PlusCircleOutlined />}
+        >
+          Create Table
+        </Button>
+      </div>
+      {/* )} */}
       <div className="mt-6">
         <ResTable
           theme={vendorTableTheme}

@@ -66,7 +66,7 @@ const HeaderLayout = () => {
 
         <NavLink to={`/${role}/profile`}>
           <img
-            src={Pdata?.data?.image ? showImage(Pdata?.data?.image) : user}
+            src={Pdata?.data?.image ? showImage(Pdata.data.image) : user}
             width={40}
             className="rounded-full object-cover"
             alt=""

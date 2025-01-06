@@ -6,7 +6,14 @@ import { useGetVendorWalletDetailsQuery } from "../../../redux/features/wallet/w
 import { vendorTableTheme } from "../../../themes";
 
 const VendorTransaction = () => {
+  // const [restaurantId, setRestaurantId] = useState<String | null>(null);
+  // const query: Record<string, any> = {};
+  // const { data: ResData } = useGetVendorWiseRestaurantIdQuery({});
+  // if (restaurantId) query["restaurant"] = restaurantId;
   const { data: walletData, isLoading } = useGetVendorWalletDetailsQuery({});
+  // const handleChange = (value: string) => {
+  //   setRestaurantId(value);
+  // };
   //console.log(walletData?.data[0]?.paymentHistory);
   const column = [
     {
@@ -54,6 +61,16 @@ const VendorTransaction = () => {
   );
   return (
     <div>
+      {/* <div className="flex justify-end">
+        <Select
+          style={{ width: 200, height: 33 }}
+          placeholder="Select Restaurant"
+          onChange={handleChange}
+          options={ResData?.data?.map((data: any) => {
+            return { label: data?.name, value: data?._id };
+          })}
+        />
+      </div> */}
       <VendorTransactionCard data={walletData?.data[0]} />
       <div className="mt-4">
         <ResTable

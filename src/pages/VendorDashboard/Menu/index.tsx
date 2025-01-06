@@ -42,7 +42,7 @@ const Menu = () => {
         <AddMenu setShow={setshow} />
       </ResModal>
 
-      <MenuHeaderCards />
+      <MenuHeaderCards restaurant={restaurantId} />
       <div className="flex justify-end gap-x-4 ">
         <Select
           style={{ width: 200, height: 40 }}

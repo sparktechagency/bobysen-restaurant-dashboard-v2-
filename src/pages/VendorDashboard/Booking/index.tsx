@@ -2,7 +2,7 @@
 import { useState } from "react";
 import ABookingCard from "../../../component/BookingCard/BookingCard";
 
-import { DatePicker, Input, Tag } from "antd";
+import { DatePicker, Input, Select, Tag } from "antd";
 import dayjs from "dayjs";
 import { GrView } from "react-icons/gr";
 import { NavLink } from "react-router-dom";
@@ -14,10 +14,19 @@ import {
   useGetAllBookingQuery,
   useUpdateBookingMutation,
 } from "../../../redux/features/booking/bookingApi";
+import { useGetVendorWiseRestaurantIdQuery } from "../../../redux/features/restaurant/restaurantApi";
 const Booking = () => {
   const [date, setDate] = useState<string | null>();
   const [searchTerm, setSearchTerm] = useState<string | null>();
+  const [restaurantId, setRestaurantId] = useState<String | null>(null);
   const query: Record<string, any> = {};
+  const { data: ResData } = useGetVendorWiseRestaurantIdQuery({});
+  if (restaurantId) query["restaurant"] = restaurantId;
+  const handleChange = (value: string) => {
+    setRestaurantId(value);
+  };
+  // if (restaurantId) query["restaurant"] = restaurantId;
+  // const query: Record<string, any> = {};
   if (date) query["date"] = date;
   if (searchTerm) query["searchTerm"] = searchTerm;
   query["status"] = "active";
@@ -146,7 +155,17 @@ const Booking = () => {
   ];
   return (
     <div>
-      <ABookingCard />
+      <div className="flex justify-end  mb-3">
+        <Select
+          style={{ width: 200, height: 33 }}
+          placeholder="Select Restaurant"
+          onChange={handleChange}
+          options={ResData?.data?.map((data: any) => {
+            return { label: data?.name, value: data?._id };
+          })}
+        />
+      </div>
+      <ABookingCard restaurant={restaurantId} />
 
       <div className="flex justify-end gap-x-4 my-4">
         <DatePicker
