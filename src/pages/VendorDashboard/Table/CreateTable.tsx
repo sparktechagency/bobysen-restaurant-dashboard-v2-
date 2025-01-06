@@ -1,13 +1,12 @@
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "antd";
 import React from "react";
+import { toast } from "sonner";
 import ResForm from "../../../component/Form/FormProvider";
 import ResInput from "../../../component/Form/ResInput";
-import { Button } from "antd";
-import { useAddTableMutation } from "../../../redux/features/table/tableApi";
-import { toast } from "sonner";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useAddTableMutation } from "../../../redux/features/table/tableApi";
 import { tableValidation } from "../../../schema/table.schema";
 
 interface TTableProps {
@@ -16,6 +15,7 @@ interface TTableProps {
 }
 const CreateTable = ({ restaurantId, setShow }: TTableProps) => {
   const [addTable] = useAddTableMutation();
+
   const onSubmit = async (data: any) => {
     data.seats = Number(data?.seats);
     const toastId = toast.loading("Creating...");

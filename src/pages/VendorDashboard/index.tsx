@@ -1,24 +1,46 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { Row, Col, Space, Button, DatePicker } from "antd";
-import VendorDashboardCard from "../../component/VendorDashboardCard";
-import VendorChart from "../../component/VendorChart/VendorChart";
-import avg from "../../assets/avg.png";
-import SellingItems from "../../component/SellingItem/SellingItems";
-import { useGetAllMenuQuery } from "../../redux/features/menu/menuApi";
-import { NavLink } from "react-router-dom";
-import { useGetBookingStaticsQuery } from "../../redux/features/booking/bookingApi";
-import { useState } from "react";
+import { Button, Col, DatePicker, Row, Select, Space } from "antd";
 import dayjs from "dayjs";
+import { useState } from "react";
+import { NavLink } from "react-router-dom";
+import avg from "../../assets/avg.png";
 import NoData from "../../component/NoData/NoData";
+import SellingItems from "../../component/SellingItem/SellingItems";
 import Loading from "../../component/UI/Loading";
+import VendorChart from "../../component/VendorChart/VendorChart";
+import VendorDashboardCard from "../../component/VendorDashboardCard";
+import { useGetBookingStaticsQuery } from "../../redux/features/booking/bookingApi";
+import { useGetAllMenuQuery } from "../../redux/features/menu/menuApi";
+import { useGetVendorWiseRestaurantIdQuery } from "../../redux/features/restaurant/restaurantApi";
 const VendorDashboard = () => {
+  const [restaurantId, setRestaurantId] = useState<String | null>(null);
+  const query: Record<string, any> = {};
+  if (restaurantId) query["restaurant"] = restaurantId;
   const [year, setYear] = useState(dayjs().format("YYYY"));
-  const { data: menuData, isLoading } = useGetAllMenuQuery({});
-  const { data: staticsData } = useGetBookingStaticsQuery({ year });
+  const { data: menuData, isLoading } = useGetAllMenuQuery(query);
+  const { data: staticsData } = useGetBookingStaticsQuery({ ...query, year });
+
+  const { data: ResData } = useGetVendorWiseRestaurantIdQuery({});
+
+  const handleChange = (value: string) => {
+    setRestaurantId(value);
+  };
   return (
     <Row gutter={[16, 16]}>
+      <Col span={24} className="flex justify-end">
+        <div>
+          <Select
+            style={{ width: 200, height: 33 }}
+            placeholder="Select Restaurant"
+            onChange={handleChange}
+            options={ResData?.data?.map((data: any) => {
+              return { label: data?.name, value: data?._id };
+            })}
+          />
+        </div>
+      </Col>
       <Col span={14}>
-        <VendorDashboardCard />
+        <VendorDashboardCard query={query} />
         <div className="bg-white mt-4 p-4">
           <div className="flex items-center justify-between">
             <div>

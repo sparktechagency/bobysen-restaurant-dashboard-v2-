@@ -1,14 +1,17 @@
-import { Row, Col } from "antd";
+import { Col, Row } from "antd";
 import menoLogo from "../../assets/vendorIcon/menu.png";
-import tableLogo from "../../assets/vendorIcon/table.png";
 import orderLogo from "../../assets/vendorIcon/order.png";
+import tableLogo from "../../assets/vendorIcon/table.png";
+import { useGetAllBookingQuery } from "../../redux/features/booking/bookingApi";
 import { useGetAllMenuQuery } from "../../redux/features/menu/menuApi";
 import { useGetTablesQuery } from "../../redux/features/table/tableApi";
-import { useGetAllBookingQuery } from "../../redux/features/booking/bookingApi";
-const VendorDashboardCard = () => {
-  const { data: menuData } = useGetAllMenuQuery({});
-  const { data: tableData } = useGetTablesQuery({});
-  const { data: bookingData } = useGetAllBookingQuery({ status: "active" });
+const VendorDashboardCard = ({ query }: any) => {
+  const { data: menuData } = useGetAllMenuQuery(query);
+  const { data: tableData } = useGetTablesQuery(query);
+  const { data: bookingData } = useGetAllBookingQuery({
+    ...query,
+    status: "active",
+  });
 
   return (
     <Row gutter={[16, 16]}>
