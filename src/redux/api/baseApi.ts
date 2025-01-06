@@ -51,7 +51,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
       "https://api.bookatable.mu/api/v1/auth/refresh-token",
       {
         method: "POST",
-        credentials: "include",
+        // credentials: "include",
       }
     );
 
