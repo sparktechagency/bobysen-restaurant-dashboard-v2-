@@ -14,7 +14,7 @@ import { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "https://api.bookatable.mu/api/v1",
-  credentials: "include",
+  // credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const otpToken = sessionStorage.getItem("token");
 
@@ -51,7 +51,7 @@ const baseQueryWithRefreshToken: BaseQueryFn<
       "https://api.bookatable.mu/api/v1/auth/refresh-token",
       {
         method: "POST",
-        credentials: "include",
+        // credentials: "include",
       }
     );
 
