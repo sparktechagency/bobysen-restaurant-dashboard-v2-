@@ -8,7 +8,6 @@ const ABooking = () => {
   const query: any = {};
   query["limit"] = 999999999999;
   const { data: ABdata, isLoading } = useGetAllBookingForAdminQuery(query);
-  console.log(ABdata);
 
   const column = [
     // {
@@ -20,23 +19,23 @@ const ABooking = () => {
       title: "Name",
       dataIndex: "user",
 
-      render: (text: any) => <p>{text.fullName}</p>,
+      render: (text: any) => <p>{text?.fullName}</p>,
     },
 
     {
       title: "Restaurant",
       dataIndex: "restaurant",
-      render: (text: any) => <p>{text.name}</p>,
+      render: (text: any) => <p>{text?.name}</p>,
     },
     {
       title: "Table No",
       dataIndex: "table",
-      render: (text: any) => <p>{text.tableNo}</p>,
+      render: (text: any) => <p>{text?.tableNo}</p>,
     },
     {
       title: "Seats",
       dataIndex: "table",
-      render: (text: any) => <p>{text.seats}</p>,
+      render: (text: any) => <p>{text?.seats}</p>,
     },
     {
       title: "Date",
