@@ -1,9 +1,15 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { zodResolver } from "@hookform/resolvers/zod";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
-import { Button, Col, Divider, Form, Row, Switch, UploadFile } from "antd";
+import {
+  Button,
+  Col,
+  Divider,
+  Form,
+  Row,
+  Spin,
+  Switch,
+  UploadFile,
+} from "antd";
 import { RcFile } from "antd/es/upload";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -37,19 +43,18 @@ const EditRestaurant = () => {
   );
   const autocompleteRef = useRef<any>(null);
   const center: any = {
-    lat: Number(singleRestaurantData?.data?.location?.coordinates[1]), // Default latitude for Kuwait
-    lng: Number(singleRestaurantData?.data?.location?.coordinates[0]), // Default longitude for Kuwait
+    lat: Number(singleRestaurantData?.data?.location?.coordinates[1]),
+    lng: Number(singleRestaurantData?.data?.location?.coordinates[0]),
   };
-  console.log(center);
   const containerStyle = {
-    width: "800px",
-    height: "300px",
+    width: "100%", // Use 100% or a fixed value like "800px"
+    height: "300px", // Use a fixed height
   };
   const [map, setMap] = useState(null);
   const [selectedPosition, setSelectedPosition] = useState(center);
   const [marker, setMarker] = useState(null);
-
   const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [isMapLoaded, setIsMapLoaded] = useState(false);
 
   useEffect(() => {
     if (singleRestaurantData?.data?.images) {
@@ -71,13 +76,17 @@ const EditRestaurant = () => {
     googleMapsApiKey: "AIzaSyAu6RiRrpTx0SY5nnFxml5UbOpuHiGNHKI",
     libraries: ["places"],
   });
-  // Handle place selection
+
+  useEffect(() => {
+    if (isLoaded) {
+      setIsMapLoaded(true);
+    }
+  }, [isLoaded]);
+
   const handlePlaceSelect = () => {
     const place = autocompleteRef.current.getPlace();
     if (place && place.formatted_address) {
-      // Manually update the input value
       const address = place.formatted_address;
-      // You can now update the state/form value using setValue or directly into the input
       autocompleteRef.current.input.value = address;
     }
   };
@@ -89,8 +98,8 @@ const EditRestaurant = () => {
       );
       autocomplete.addListener("place_changed", handlePlaceSelect);
     }
-  }, []);
-  // @ts-ignore
+  }, [isMapLoaded]);
+
   const onMapClick = useCallback(
     (event: any) => {
       const lat = event.latLng.lat();
@@ -111,7 +120,7 @@ const EditRestaurant = () => {
     },
     [marker, map]
   );
-  // @ts-ignore
+
   const onLoad = useCallback((map: any) => {
     setMap(map);
     const initialMarker = new window.google.maps.Marker({
@@ -120,6 +129,11 @@ const EditRestaurant = () => {
     });
     // @ts-ignore
     setMarker(initialMarker);
+
+    // Force a resize event to fix the white screen issue
+    setTimeout(() => {
+      window.google.maps.event.trigger(map, "resize");
+    }, 100);
   }, []);
 
   const onUnmount = useCallback(() => {
@@ -133,10 +147,9 @@ const EditRestaurant = () => {
   const onChange = (value: boolean) => {
     setReviewStatus(value);
   };
+
   const onSubmit = async (data: any) => {
     const location = {
-      // latitude: currentPosition?.lat,
-      // longitude: currentPosition?.lng,
       coordinates: [
         parseFloat(selectedPosition?.lng as any),
         parseFloat(selectedPosition?.lat as any),
@@ -144,7 +157,6 @@ const EditRestaurant = () => {
       type: "Point",
     };
 
-    console.log(location);
     const formatedData = {
       ...data,
       location,
@@ -165,14 +177,11 @@ const EditRestaurant = () => {
         id: toastId,
         duration: 2000,
       });
-      //   //console.log(res);
       navigate("/vendor/restaurant");
     } catch (err) {
       ErrorResponse(err, toastId);
     }
   };
-
-  //   delete an image
 
   const deleteFile = async (file: any): Promise<boolean> => {
     return new Promise((resolve) => {
@@ -180,7 +189,6 @@ const EditRestaurant = () => {
         description: "This action cannot be undone!",
         action: {
           label: "Delete",
-
           onClick: async () => {
             const toastId = toast.loading("Deleting...");
             try {
@@ -192,16 +200,24 @@ const EditRestaurant = () => {
                 id: toastId,
                 duration: 2000,
               });
-              resolve(true); // Resolve with true if deletion is successful
+              resolve(true);
             } catch (err) {
               ErrorResponse(err, toastId);
-              resolve(false); // Resolve with false if deletion fails
+              resolve(false);
             }
           },
         },
       });
     });
   };
+
+  if (!isMapLoaded) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Spin size="large" />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -222,20 +238,16 @@ const EditRestaurant = () => {
           </Col>
 
           <Col span={12}>
-            {isLoaded ? (
-              <GoogleMap
-                mapContainerStyle={containerStyle}
-                center={selectedPosition}
-                zoom={12}
-                onLoad={onLoad}
-                onUnmount={onUnmount}
-                onClick={onMapClick}
-              >
-                <Marker position={selectedPosition} />
-              </GoogleMap>
-            ) : (
-              <>Loading...</>
-            )}
+            <GoogleMap
+              mapContainerStyle={containerStyle}
+              center={selectedPosition}
+              zoom={12}
+              onLoad={onLoad}
+              onUnmount={onUnmount}
+              onClick={onMapClick}
+            >
+              <Marker position={selectedPosition} />
+            </GoogleMap>
           </Col>
           <Col span={12}>
             <ResInput
@@ -247,7 +259,6 @@ const EditRestaurant = () => {
             />
           </Col>
           <Col span={12}>
-            {/* <Autocomplete> */}
             <ResInput
               size="large"
               label="Enter Restaurant address"
@@ -255,7 +266,6 @@ const EditRestaurant = () => {
               name="address"
               placeholder="type restaurant address"
             />
-            {/* </Autocomplete> */}
           </Col>
           <Col span={24}>
             <ResTextArea
@@ -307,15 +317,6 @@ const EditRestaurant = () => {
                 <Switch defaultChecked onChange={onChange} />
               </div>
             </Form.Item>
-            {/* <Form.Item>
-              <Button
-                onClick={getCurrentEndpoint}
-                icon={<FaMapMarkerAlt />}
-                className="bg-primary text-white "
-              >
-                Allow Your Map Location
-              </Button>
-            </Form.Item> */}
           </Col>
 
           <Col span={12}>
