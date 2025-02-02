@@ -29,7 +29,6 @@ const Table = () => {
   };
   if (restaurantId) query["restaurant"] = restaurantId;
   const { data: tableData, isLoading } = useGetTablesQuery(query);
-  console.log(query);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
 
   // const handleBookedTable = (id: string, type: string) => {

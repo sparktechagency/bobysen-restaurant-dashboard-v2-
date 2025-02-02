@@ -9,13 +9,14 @@ import { BsBorderStyle } from "react-icons/bs";
 import { CiSettings } from "react-icons/ci";
 import AboutUs from "../pages/AboutUs";
 
-import { ImPageBreak } from "react-icons/im";
+import { ImPageBreak, ImUser } from "react-icons/im";
 import ABooking from "../pages/AdminDashboard/ABooking";
 import Banner from "../pages/AdminDashboard/Banner";
 import Event from "../pages/AdminDashboard/Events";
 import EventBookingDetails from "../pages/AdminDashboard/Events/EventBookingDetails";
 import Points from "../pages/AdminDashboard/Points";
 import TopRestaurant from "../pages/AdminDashboard/TopRestaurant";
+import Users from "../pages/AdminDashboard/Users";
 import ChangePasswordFrom from "../pages/ChangePasswordForm";
 import Notification from "../pages/Notification";
 import Otp from "../pages/Otp";
@@ -31,6 +32,12 @@ export const adminRoute = [
     path: "dashboard",
     icon: <MdPeopleOutline />,
     element: <AdminDashboard />,
+  },
+  {
+    name: "Users",
+    path: "user",
+    icon: <ImUser />,
+    element: <Users />,
   },
   {
     name: "Banner",
