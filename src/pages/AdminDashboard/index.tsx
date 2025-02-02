@@ -1,26 +1,24 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
-import ResTable from "../../component/Table";
-import { data } from "../../db";
-import { Button, Input } from "antd";
-import { PlusCircleOutlined } from "@ant-design/icons";
+import { EditOutlined, PlusCircleOutlined } from "@ant-design/icons";
+import { Button, Input, Tag } from "antd";
+import { useState } from "react";
 import ResModal from "../../component/Modal/Modal";
-import CreateVendor from "./Vendor/CreateVendor";
-import EditVentor from "./Vendor/EditVentor";
-import { EditOutlined } from "@ant-design/icons";
-import { Tag } from "antd";
+import ResTable from "../../component/Table";
 import VendorCard from "../../component/VendorCard/VendorCard";
-import { vendorTableTheme } from "../../themes";
+import { data } from "../../db";
 import {
   useGetAllUserQuery,
   useUpdateUserMutation,
 } from "../../redux/features/auth/authApi";
+import { vendorTableTheme } from "../../themes";
+import CreateVendor from "./Vendor/CreateVendor";
+import EditVentor from "./Vendor/EditVentor";
 
+import { SearchProps } from "antd/es/input";
 import ErrorResponse from "../../component/UI/ErrorResponse";
 import ResConfirm from "../../component/UI/PopConfirm";
-import { useAppDispatch } from "../../redux/hooks";
 import { setvendorDetails } from "../../redux/features/auth/authSlice";
-import { SearchProps } from "antd/es/input";
+import { useAppDispatch } from "../../redux/hooks";
 
 const AdminDashboard = () => {
   const [show, setShow] = useState<boolean>(false);
@@ -114,7 +112,7 @@ const AdminDashboard = () => {
       >
         <EditVentor setShowEditModal={setShowEditModal} />
       </ResModal>
-      <VendorCard total={vendorData?.meta?.total} />
+      <VendorCard total={vendorData?.meta?.total} title="Vendors" />
       <div className="flex justify-end mb-4 items-center gap-x-4">
         <Input.Search
           onSearch={onSearch}
