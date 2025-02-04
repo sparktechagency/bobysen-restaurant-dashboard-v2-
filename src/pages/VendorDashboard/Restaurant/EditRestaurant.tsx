@@ -1,15 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { GoogleMap, Marker, useJsApiLoader } from "@react-google-maps/api";
-import {
-  Button,
-  Col,
-  Divider,
-  Form,
-  Row,
-  Spin,
-  Switch,
-  UploadFile,
-} from "antd";
+import { Button, Col, Divider, Form, Row, Switch, UploadFile } from "antd";
 import { RcFile } from "antd/es/upload";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
@@ -17,7 +8,6 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import ResForm from "../../../component/Form/FormProvider";
-import ResDatePicker from "../../../component/Form/ResDatePicker";
 import ResInput from "../../../component/Form/ResInput";
 import ResTextArea from "../../../component/Form/ResTextarea";
 import ResTimePicker from "../../../component/Form/ResTimepicker";
@@ -30,76 +20,78 @@ import {
 } from "../../../redux/features/restaurant/restaurantApi";
 import { restaurantSchema } from "../../../schema/restaurant.schema";
 import showImage from "../../../utils/showImage";
+
 dayjs.extend(customParseFormat);
+
+const containerStyle = {
+  width: "100%",
+  height: "300px",
+};
+
+// Default center if no valid location is available (New York City as fallback)
+const DEFAULT_CENTER = { lat: 40.7128, lng: -74.006 };
 
 const EditRestaurant = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [reviewStatus, setReviewStatus] = useState(true);
   const [editRestaurant] = useEditRestaurantMutation();
-  const [deletImages] = useDeleteFileMutation();
-  const { data: singleRestaurantData, isSuccess } = useGetSingleRestaurantQuery(
-    id!
-  );
-  const autocompleteRef = useRef<any>(null);
-  const center: any = {
-    lat: Number(singleRestaurantData?.data?.location?.coordinates[1]),
-    lng: Number(singleRestaurantData?.data?.location?.coordinates[0]),
-  };
-  const containerStyle = {
-    width: "100%", // Use 100% or a fixed value like "800px"
-    height: "300px", // Use a fixed height
-  };
-  const [map, setMap] = useState(null);
-  const [selectedPosition, setSelectedPosition] = useState(center);
-  const [marker, setMarker] = useState(null);
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
-  const [isMapLoaded, setIsMapLoaded] = useState(false);
+  const [deleteImages] = useDeleteFileMutation();
+  const { data: singleRestaurantData } = useGetSingleRestaurantQuery(id!);
 
+  const autocompleteRef = useRef<any>(null);
+  const [map, setMap] = useState<any>(null);
+  const [marker, setMarker] = useState<any>(null);
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [mapVisible, setMapVisible] = useState(false); // Controls when to show the map
+
+  // Get restaurant location or set a fallback default
+  const getRestaurantLocation = () => {
+    if (singleRestaurantData?.data?.location?.coordinates) {
+      return {
+        lat:
+          Number(singleRestaurantData.data.location.coordinates[1]) ||
+          DEFAULT_CENTER.lat,
+        lng:
+          Number(singleRestaurantData.data.location.coordinates[0]) ||
+          DEFAULT_CENTER.lng,
+      };
+    }
+    return DEFAULT_CENTER;
+  };
+
+  const [selectedPosition, setSelectedPosition] = useState(
+    getRestaurantLocation
+  );
+
+  // Load images if available
   useEffect(() => {
     if (singleRestaurantData?.data?.images) {
-      const formattedImages = singleRestaurantData?.data?.images?.map(
-        (image: any) => ({
+      setFileList(
+        singleRestaurantData?.data?.images?.map((image: any) => ({
           uid: image?._id,
           name: image?.url,
           status: "done",
           url: showImage(image?.url),
-        })
+        }))
       );
-
-      setFileList(formattedImages);
     }
   }, [singleRestaurantData]);
 
+  // Load Google Maps API
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyAu6RiRrpTx0SY5nnFxml5UbOpuHiGNHKI",
     libraries: ["places"],
   });
 
-  useEffect(() => {
-    if (isLoaded) {
-      setIsMapLoaded(true);
-    }
-  }, [isLoaded]);
-
-  const handlePlaceSelect = () => {
-    const place = autocompleteRef.current.getPlace();
-    if (place && place.formatted_address) {
-      const address = place.formatted_address;
-      autocompleteRef.current.input.value = address;
-    }
+  // Manually load map when button is clicked
+  const loadMap = () => {
+    setSelectedPosition(getRestaurantLocation());
+    setMapVisible(true);
   };
 
-  useEffect(() => {
-    if (autocompleteRef.current) {
-      const autocomplete = new window.google.maps.places.Autocomplete(
-        autocompleteRef.current.input
-      );
-      autocomplete.addListener("place_changed", handlePlaceSelect);
-    }
-  }, [isMapLoaded]);
-
+  // Handle map clicks to update selected location
   const onMapClick = useCallback(
     (event: any) => {
       const lat = event.latLng.lat();
@@ -107,14 +99,12 @@ const EditRestaurant = () => {
       setSelectedPosition({ lat, lng });
 
       if (marker) {
-        // @ts-ignore
         marker.setPosition({ lat, lng });
       } else {
         const newMarker = new window.google.maps.Marker({
           position: { lat, lng },
           map: map,
         });
-        // @ts-ignore
         setMarker(newMarker);
       }
     },
@@ -124,24 +114,20 @@ const EditRestaurant = () => {
   const onLoad = useCallback((map: any) => {
     setMap(map);
     const initialMarker = new window.google.maps.Marker({
-      position: center,
+      position: selectedPosition,
       map: map,
     });
-    // @ts-ignore
     setMarker(initialMarker);
 
-    // Force a resize event to fix the white screen issue
     setTimeout(() => {
       window.google.maps.event.trigger(map, "resize");
-    }, 100);
+    }, 500);
   }, []);
 
   const onUnmount = useCallback(() => {
+    if (marker) marker.setMap(null);
     setMap(null);
-    if (marker) {
-      // @ts-ignore
-      marker.setMap(null);
-    }
+    setMarker(null);
   }, [marker]);
 
   const onChange = (value: boolean) => {
@@ -150,74 +136,30 @@ const EditRestaurant = () => {
 
   const onSubmit = async (data: any) => {
     const location = {
-      coordinates: [
-        parseFloat(selectedPosition?.lng as any),
-        parseFloat(selectedPosition?.lat as any),
-      ],
+      coordinates: [selectedPosition.lng, selectedPosition.lat],
       type: "Point",
     };
 
-    const formatedData = {
-      ...data,
-      location,
-    };
     const formData = new FormData();
-    if (fileList && fileList.length > 0) {
-      fileList.forEach((file: any) => {
-        if (file.originFileObj) {
-          formData.append("files", file.originFileObj);
-        }
-      });
-    }
-    formData.append("data", JSON.stringify({ ...formatedData, reviewStatus }));
+    fileList.forEach((file: any) => {
+      if (file.originFileObj) {
+        formData.append("files", file.originFileObj);
+      }
+    });
+
+    formData.append(
+      "data",
+      JSON.stringify({ ...data, location, reviewStatus })
+    );
     const toastId = toast.loading("Editing...");
     try {
-      await editRestaurant({ id: id, data: formData }).unwrap();
-      toast.success("Restaurant edited successfully", {
-        id: toastId,
-        duration: 2000,
-      });
+      await editRestaurant({ id, data: formData }).unwrap();
+      toast.success("Restaurant edited successfully", { id: toastId });
       navigate("/vendor/restaurant");
     } catch (err) {
       ErrorResponse(err, toastId);
     }
   };
-
-  const deleteFile = async (file: any): Promise<boolean> => {
-    return new Promise((resolve) => {
-      toast("Are You Sure?", {
-        description: "This action cannot be undone!",
-        action: {
-          label: "Delete",
-          onClick: async () => {
-            const toastId = toast.loading("Deleting...");
-            try {
-              const res = await deletImages({
-                restaurantId: id,
-                imageId: file?.uid,
-              }).unwrap();
-              toast.success("Image deleted successfully", {
-                id: toastId,
-                duration: 2000,
-              });
-              resolve(true);
-            } catch (err) {
-              ErrorResponse(err, toastId);
-              resolve(false);
-            }
-          },
-        },
-      });
-    });
-  };
-
-  if (!isMapLoaded) {
-    return (
-      <div className="flex justify-center items-center h-screen">
-        <Spin size="large" />
-      </div>
-    );
-  }
 
   return (
     <div>
@@ -232,84 +174,96 @@ const EditRestaurant = () => {
               <MultiUpload
                 fileList={fileList as RcFile[]}
                 setFileList={setFileList}
-                removeFile={deleteFile}
               />
             </Form.Item>
           </Col>
 
           <Col span={12}>
-            <GoogleMap
-              mapContainerStyle={containerStyle}
-              center={selectedPosition}
-              zoom={12}
-              onLoad={onLoad}
-              onUnmount={onUnmount}
-              onClick={onMapClick}
-            >
-              <Marker position={selectedPosition} />
-            </GoogleMap>
+            {!mapVisible ? (
+              <div
+                className="flex items-center justify-center w-full border-2 border-primary rounded-md cursor-pointer"
+                style={{ height: "300px" }} // Same height as the map
+                onClick={loadMap}
+              >
+                <p className="text-gray-500 text-lg font-500 text-24 ">
+                  🗺️ Click to Load Map
+                </p>
+              </div>
+            ) : (
+              isLoaded && (
+                <GoogleMap
+                  mapContainerStyle={containerStyle}
+                  center={selectedPosition}
+                  zoom={12}
+                  onLoad={(map) => {
+                    setMap(map);
+
+                    // Ensure the marker is set correctly when map loads
+                    const initialMarker = new window.google.maps.Marker({
+                      position: selectedPosition,
+                      map: map,
+                    });
+
+                    setMarker(initialMarker);
+
+                    // Ensure map resizes properly
+                    setTimeout(() => {
+                      window.google.maps.event.trigger(map, "resize");
+                    }, 500);
+                  }}
+                  onUnmount={() => {
+                    if (marker) marker.setMap(null);
+                    setMap(null);
+                    setMarker(null);
+                  }}
+                  onClick={(event) => {
+                    // @ts-ignore
+                    const lat = event?.latLng.lat();
+                    // @ts-ignore
+                    const lng = event?.latLng.lng();
+                    setSelectedPosition({ lat, lng });
+
+                    if (marker) {
+                      marker.setPosition({ lat, lng });
+                    } else {
+                      const newMarker = new window.google.maps.Marker({
+                        position: { lat, lng },
+                        map: map,
+                      });
+                      setMarker(newMarker);
+                    }
+                  }}
+                >
+                  {selectedPosition && <Marker position={selectedPosition} />}
+                </GoogleMap>
+              )
+            )}
           </Col>
+
           <Col span={12}>
             <ResInput
-              size="large"
-              label="Enter Restaurant name"
               type="text"
+              label="Enter Restaurant name"
               name="name"
-              placeholder="type name here"
+              placeholder="Type name here"
             />
           </Col>
           <Col span={12}>
             <ResInput
-              size="large"
-              label="Enter Restaurant address"
               type="text"
+              label="Enter Restaurant address"
               name="address"
-              placeholder="type restaurant address"
+              placeholder="Type address"
             />
           </Col>
           <Col span={24}>
             <ResTextArea
               label="Description"
               name="description"
-              placeholder="type restaurant description"
+              placeholder="Type description"
             />
           </Col>
-          <Col span={6}>
-            <ResDatePicker
-              showTime={true}
-              size="large"
-              label="Enter Close From"
-              name="close.from"
-              placeholder="select date and time"
-            />
-          </Col>
-          <Col span={6}>
-            <ResDatePicker
-              showTime={true}
-              size="large"
-              label="Enter Close To"
-              name="close.to"
-              placeholder="select date and time"
-            />
-          </Col>
-          <Col span={6}>
-            <ResInput
-              size="large"
-              label="Enter helpineNumber (the number should have whatsapp)"
-              type="text"
-              name="helpLineNumber1"
-              placeholder="type number"
-            />
-          </Col>
-          <Col span={6}>
-            <ResInput
-              size="large"
-              label="Enter Another Number"
-              type="text"
-              name="helpLineNumber2"
-              placeholder="type number"
-            />
-          </Col>
+
           <Col span={24} className="flex gap-x-4">
             <Form.Item name="review-status">
               <div className="flex gap-x-2 items-center">
@@ -318,7 +272,6 @@ const EditRestaurant = () => {
               </div>
             </Form.Item>
           </Col>
-
           <Col span={12}>
             <Divider className="bg-deepGray" />
             <Row gutter={16}>
