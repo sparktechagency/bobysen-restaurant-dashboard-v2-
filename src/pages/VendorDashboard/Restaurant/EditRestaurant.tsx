@@ -77,12 +77,12 @@ const EditRestaurant = () => {
       );
     }
   }, [singleRestaurantData]);
-
+  const libraries: any = ["places"];
   // Load Google Maps API
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: "AIzaSyAu6RiRrpTx0SY5nnFxml5UbOpuHiGNHKI",
-    libraries: ["places"],
+    libraries: libraries, // Use the constant here
   });
 
   // Manually load map when button is clicked
