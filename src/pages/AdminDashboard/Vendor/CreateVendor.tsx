@@ -16,6 +16,10 @@ const CreateVendor = ({ setShow }: any) => {
   const { imageUrl, setFile, imageFile } = UseImageUpload();
   const [createVendor] = useCreateVendorMutation();
   const onSubmit = async (data: any) => {
+    const formatedData = {
+      ...data,
+      phoneNumber: `+230${data?.phoneNumber}`,
+    };
     const toastId = toast.loading("Creating......");
     if (!imageFile) {
       toast.error("Please select an image", { id: toastId, duration: 2000 });
@@ -26,7 +30,7 @@ const CreateVendor = ({ setShow }: any) => {
     if (imageFile) {
       formData.append("file", imageFile);
     }
-    formData.append("data", JSON.stringify(data));
+    formData.append("data", JSON.stringify(formatedData));
 
     try {
       await createVendor(formData).unwrap();
