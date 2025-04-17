@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import EditEvent from "../../../pages/AdminDashboard/Events/editEvents";
 import { tagTypes } from "../../../types/tagTypes";
 import { baseApi } from "../../api/baseApi";
 
@@ -19,6 +20,14 @@ const eventApi = baseApi.injectEndpoints({
         params: query,
       }),
       providesTags: [tagTypes.event],
+    }),
+    EditEvent: builder.mutation({
+      query: (data) => ({
+        url: `/events/${data?.id}`,
+        method: "PATCH",
+        body: data?.data,
+      }),
+      invalidatesTags: [tagTypes.event],
     }),
     updateEvents: builder.mutation({
       query: (data) => ({

@@ -2,6 +2,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   DeleteOutlined,
+  EditOutlined,
   EyeOutlined,
   PlusCircleOutlined,
 } from "@ant-design/icons";
@@ -19,10 +20,12 @@ import {
   useUpdateEventsMutation,
 } from "../../../redux/features/event/eventApi";
 import CreateEvents from "./createEvents";
+import EditEvent from "./editEvents";
 
 const Event = () => {
   const [show, setShow] = useState(false);
-
+  const [showmodal, setShowModal] = useState<boolean>(false);
+  const [singelEventData, setSingelEventData] = useState({});
   const [date, setDate] = useState("");
   const query: Record<string, any> = {};
   if (date) query["date"] = date;
@@ -79,6 +82,15 @@ const Event = () => {
             >
               <DeleteOutlined className="cursor-pointer" key={index} />
             </ResConfirm>
+
+            <EditOutlined
+              className="cursor-pointer"
+              key={index}
+              onClick={() => {
+                setShowModal((prev) => !prev);
+                setSingelEventData(data);
+              }}
+            />
           </div>
         );
       },
@@ -90,6 +102,14 @@ const Event = () => {
   };
   return (
     <div>
+      <ResModal
+        showModal={showmodal}
+        setShowModal={setShowModal}
+        title="Edit an event"
+        width={700}
+      >
+        <EditEvent setShow={setShowModal} data={singelEventData} />
+      </ResModal>
       <ResModal
         showModal={show}
         setShowModal={setShow}

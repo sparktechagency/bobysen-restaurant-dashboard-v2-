@@ -28,6 +28,14 @@ const restaurantsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.restaurant],
     }),
+    handleChangeStatus: builder.mutation({
+      query: (body) => ({
+        url: `/restaurants/status/${body?.id}`,
+        method: "PATCH",
+        body: body?.data,
+      }),
+      invalidatesTags: [tagTypes.restaurant],
+    }),
     DeleteFile: builder.mutation({
       query: (body) => ({
         url: `/restaurants/files/delete`,
@@ -106,4 +114,5 @@ export const {
   useUpdateTopRestaurantMutation,
   useGetSingleTopRestaurantQuery,
   useGetVendorWiseRestaurantIdQuery,
+  useHandleChangeStatusMutation,
 } = restaurantsApi;

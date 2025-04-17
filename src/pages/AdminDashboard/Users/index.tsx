@@ -4,16 +4,35 @@ import { SearchProps } from "antd/es/input";
 import { useState } from "react";
 import ResTable from "../../../component/Table";
 import VendorCard from "../../../component/VendorCard/VendorCard";
-import { useGetAllUserQuery } from "../../../redux/features/auth/authApi";
+import {
+  useGetAllUserQuery,
+  useUpdateUserMutation,
+} from "../../../redux/features/auth/authApi";
 import { vendorTableTheme } from "../../../themes";
+import ResConfirm from "../../../component/UI/PopConfirm";
+import { DeleteOutlined } from "@ant-design/icons";
+import { toast } from "sonner";
+import ErrorResponse from "../../../component/UI/ErrorResponse";
 
 const Users = () => {
   const [searchTerm, setSearchTerm] = useState<string | null>(null);
   const query: Record<string, any> = {};
   query["role"] = "user";
   if (searchTerm) query["searchTerm"] = searchTerm;
+  const [deleteUser] = useUpdateUserMutation();
   const { data: vendorData, isLoading } = useGetAllUserQuery(query);
-
+  const handledeleteUser = async (id: string) => {
+    const toastId = toast.loading("Deleting..");
+    try {
+      await deleteUser({ id, body: { isDeleted: true } }).unwrap();
+      toast.success("User Deleted successfully", {
+        id: toastId,
+        duration: 2000,
+      });
+    } catch (error) {
+      ErrorResponse(error, toastId);
+    }
+  };
   const column = [
     {
       title: "Vendor Name",
@@ -49,25 +68,22 @@ const Users = () => {
     //     );
     //   },
     // },
-    // {
-    //   title: "Action",
-
-    //   key: "action",
-    //   render: (data: any, index: number) => {
-    //     return (
-    //       <div className="flex gap-x-4">
-    //         <EditOutlined
-    //           onClick={() => {
-    //             setShowEditModal((prev) => !prev);
-    //             dispatch(setvendorDetails(data));
-    //           }}
-    //           className="cursor-pointer"
-    //           key={index}
-    //         />
-    //       </div>
-    //     );
-    //   },
-    // },
+    {
+      title: "Action",
+      key: "action",
+      render: (data: any, index: number) => {
+        return (
+          <div className="flex justify-center gap-x-2">
+            <ResConfirm
+              handleOk={() => handledeleteUser(data?._id)}
+              description="this action cannot be undone!"
+            >
+              <DeleteOutlined className="cursor-pointer" key={index} />
+            </ResConfirm>
+          </div>
+        );
+      },
+    },
   ];
   const onSearch: SearchProps["onSearch"] = (value, _e) => setSearchTerm(value);
 
