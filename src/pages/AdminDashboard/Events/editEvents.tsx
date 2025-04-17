@@ -48,7 +48,7 @@ const EditEvent = ({ setShow, data: propsData }: any) => {
   }, [propsData]);
 
   const onSubmit = async (data: any) => {
-    console.log("submitted data");
+    // console.log("submitted data");
     const toastId = toast.loading("Editing...");
     try {
       const formData = new FormData();
