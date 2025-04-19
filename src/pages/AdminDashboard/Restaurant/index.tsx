@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
 import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
 import ResConfirm from "../../../component/UI/PopConfirm";
 import { VscVmActive } from "react-icons/vsc";
-import { MdEventAvailable } from "react-icons/md";
+import { MdEventAvailable, MdReviews } from "react-icons/md";
 import { toast } from "sonner";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
 import { CgUnavailable } from "react-icons/cg";
@@ -82,6 +82,9 @@ const Restaurant = () => {
                 <MdEventAvailable className="cursor-pointer" key={index} />
               )}
             </ResConfirm>
+            <Link to={`/admin/reveiws/${data?._id}`}>
+              <MdReviews className="cursor-pointer" />
+            </Link>
           </div>
         );
       },

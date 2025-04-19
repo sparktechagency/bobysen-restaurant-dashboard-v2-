@@ -28,6 +28,20 @@ const restaurantsApi = baseApi.injectEndpoints({
       }),
       invalidatesTags: [tagTypes.restaurant],
     }),
+    getReviews: builder.query({
+      query: (id) => ({
+        url: `/reviews/${id}`,
+        method: "GET",
+      }),
+      providesTags: [tagTypes.restaurant],
+    }),
+    updateAreview: builder.mutation({
+      query: (id) => ({
+        url: `/reviews/${id}`,
+        method: "PATCH",
+      }),
+      invalidatesTags: [tagTypes.restaurant],
+    }),
     handleChangeStatus: builder.mutation({
       query: (body) => ({
         url: `/restaurants/status/${body?.id}`,
@@ -115,4 +129,6 @@ export const {
   useGetSingleTopRestaurantQuery,
   useGetVendorWiseRestaurantIdQuery,
   useHandleChangeStatusMutation,
+  useGetReviewsQuery,
+  useUpdateAreviewMutation,
 } = restaurantsApi;

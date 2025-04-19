@@ -25,6 +25,7 @@ import Profile from "../pages/Profile";
 import Setting from "../pages/Setting";
 import TermsAndCondition from "../pages/TermsAndCondition";
 import UpdatePassword from "../pages/UpdatePassword";
+import Reviews from "../pages/AdminDashboard/Restaurant/review";
 
 export const adminRoute = [
   {
@@ -66,6 +67,10 @@ export const adminRoute = [
   {
     path: "events-booking/:id",
     element: <EventBookingDetails />,
+  },
+  {
+    path: "reveiws/:id",
+    element: <Reviews />,
   },
   {
     name: "Points Redeem",
