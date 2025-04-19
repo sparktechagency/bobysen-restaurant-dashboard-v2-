@@ -10,7 +10,11 @@ import { useGetAllRestaurantsQuery } from "../../../redux/features/restaurant/re
 const VendorRestaurant = () => {
   const [show, setshow] = useState<boolean>(false);
   const query = {};
-  const { data: restaurantData } = useGetAllRestaurantsQuery(query);
+  const {
+    isLoading,
+    isFetching,
+    data: restaurantData,
+  } = useGetAllRestaurantsQuery(query);
   //console.log(restaurantData);
   const navigate = useNavigate();
   const column = [
@@ -92,7 +96,7 @@ const VendorRestaurant = () => {
       <ResTable
         column={column}
         data={restaurantData?.data}
-        loading={false}
+        loading={isLoading || isFetching}
         // pagination={{ total: vendorRestaurantData.length, pageSize: 10 }}
       />
     </div>
