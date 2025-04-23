@@ -52,6 +52,9 @@ const EditVendorSchema = z.object({
       message:
         "Vendor phone number must start with 5 and be at least 7 digits long",
     }),
+  email: z
+    .string({ required_error: "Email is Required" })
+    .min(1, { message: "email is Required" }),
 });
 
 export const authValidationSchema = {

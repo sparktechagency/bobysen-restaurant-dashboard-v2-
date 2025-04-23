@@ -11,8 +11,8 @@ import {
 } from "../../../redux/features/restaurant/restaurantApi";
 import { Input } from "antd";
 import { SearchProps } from "antd/es/input";
-import { Link } from "react-router-dom";
-import { DeleteOutlined, EyeOutlined } from "@ant-design/icons";
+import { Link, NavLink } from "react-router-dom";
+import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import ResConfirm from "../../../component/UI/PopConfirm";
 import { VscVmActive } from "react-icons/vsc";
 import { MdEventAvailable, MdReviews } from "react-icons/md";
@@ -85,6 +85,13 @@ const Restaurant = () => {
             <Link to={`/admin/reveiws/${data?._id}`}>
               <MdReviews className="cursor-pointer" />
             </Link>
+            <NavLink to={`/admin/edit-restaurant/${data?._id}`}>
+              <EditOutlined
+                // onClick={() => setshow((prev) => !prev)}
+                className="cursor-pointer"
+                key={index}
+              />
+            </NavLink>
           </div>
         );
       },

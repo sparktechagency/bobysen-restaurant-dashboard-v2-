@@ -26,6 +26,7 @@ import Setting from "../pages/Setting";
 import TermsAndCondition from "../pages/TermsAndCondition";
 import UpdatePassword from "../pages/UpdatePassword";
 import Reviews from "../pages/AdminDashboard/Restaurant/review";
+import EditRestaurant from "../pages/VendorDashboard/Restaurant/EditRestaurant";
 
 export const adminRoute = [
   {
@@ -71,6 +72,10 @@ export const adminRoute = [
   {
     path: "reveiws/:id",
     element: <Reviews />,
+  },
+  {
+    path: "edit-restaurant/:id",
+    element: <EditRestaurant />,
   },
   {
     name: "Points Redeem",

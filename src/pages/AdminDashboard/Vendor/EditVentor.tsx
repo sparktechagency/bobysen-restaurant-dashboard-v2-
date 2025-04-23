@@ -17,10 +17,13 @@ const EditVentor = ({ setShowEditModal }: any) => {
   const { imageUrl, setFile, imageFile } = UseImageUpload();
   const [editVendor] = useUpdateUserMutation();
   const vendorData = useAppSelector((state) => state.auth.vendorDetails);
+
   const onSubmit = async (data: any) => {
     const formatedData = {
       fullName: data?.fullName,
       phoneNumber: data?.phoneNumber,
+      email: data?.email,
+      currentEmail: vendorData?.email,
     };
     const toastId = toast.loading("Editing......");
     const formData = new FormData();
@@ -67,6 +70,13 @@ const EditVentor = ({ setShowEditModal }: any) => {
         label="Enter phoneNumber"
         name="phoneNumber"
         placeholder="number"
+      />
+      <ResInput
+        size="large"
+        type="text"
+        label="Enter Email"
+        name="email"
+        placeholder="email"
       />
 
       <Button
