@@ -25,9 +25,11 @@ const AdminDashboard = () => {
   const [searchTerm, setSearchTerm] = useState<string | null>(null);
   const [showEditModal, setShowEditModal] = useState<boolean>(false);
   const dispatch = useAppDispatch();
+
   const query: Record<string, any> = {};
   query["role"] = "vendor";
   if (searchTerm) query["searchTerm"] = searchTerm;
+  query["limit"] = 99999;
   const { data: vendorData, isLoading } = useGetAllUserQuery(query);
   const [updateUser] = useUpdateUserMutation();
   const handleCreateVendorModal = () => {

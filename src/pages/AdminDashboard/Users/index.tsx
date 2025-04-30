@@ -19,9 +19,9 @@ const Users = () => {
   const query: Record<string, any> = {};
   query["role"] = "user";
   if (searchTerm) query["searchTerm"] = searchTerm;
+  query["limit"] = 99999;
   const [deleteUser] = useUpdateUserMutation();
   const { data: vendorData, isLoading } = useGetAllUserQuery(query);
-  console.log(vendorData);
   const handledeleteUser = async (id: string) => {
     const toastId = toast.loading("Deleting..");
     try {
