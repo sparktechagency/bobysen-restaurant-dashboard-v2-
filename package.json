@@ -15,6 +15,7 @@
     "@react-google-maps/api": "^2.19.3",
     "@reduxjs/toolkit": "^2.2.1",
     "antd": "^5.15.3",
+    "caniuse-lite": "^1.0.30001716",
     "dayjs": "^1.11.10",
     "jodit-react": "^4.0.15",
     "jwt-decode": "^4.0.0",

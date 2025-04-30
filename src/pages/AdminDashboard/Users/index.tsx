@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { DeleteOutlined } from "@ant-design/icons";
 import { Input } from "antd";
 import { SearchProps } from "antd/es/input";
 import { useState } from "react";
+import { toast } from "sonner";
 import ResTable from "../../../component/Table";
+import ErrorResponse from "../../../component/UI/ErrorResponse";
+import ResConfirm from "../../../component/UI/PopConfirm";
 import VendorCard from "../../../component/VendorCard/VendorCard";
 import {
   useGetAllUserQuery,
   useUpdateUserMutation,
 } from "../../../redux/features/auth/authApi";
 import { vendorTableTheme } from "../../../themes";
-import ResConfirm from "../../../component/UI/PopConfirm";
-import { DeleteOutlined } from "@ant-design/icons";
-import { toast } from "sonner";
-import ErrorResponse from "../../../component/UI/ErrorResponse";
 
 const Users = () => {
   const [searchTerm, setSearchTerm] = useState<string | null>(null);
@@ -21,6 +21,7 @@ const Users = () => {
   if (searchTerm) query["searchTerm"] = searchTerm;
   const [deleteUser] = useUpdateUserMutation();
   const { data: vendorData, isLoading } = useGetAllUserQuery(query);
+  console.log(vendorData);
   const handledeleteUser = async (id: string) => {
     const toastId = toast.loading("Deleting..");
     try {
@@ -104,7 +105,7 @@ const Users = () => {
           theme={vendorTableTheme}
           data={vendorData?.data}
           column={column}
-          pagination={{ total: vendorData?.data?.length, pageSize: 10 }}
+          pagination={{ total: vendorData?.meta?.total, pageSize: 10 }}
           loading={isLoading}
         />
       </div>
