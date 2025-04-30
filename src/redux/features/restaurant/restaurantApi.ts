@@ -93,7 +93,7 @@ const restaurantsApi = baseApi.injectEndpoints({
       query: (data) => ({
         url: `/topRestaurants/${data?.id}`,
         method: "PATCH",
-        body: data.body,
+        body: data.data,
       }),
       invalidatesTags: [tagTypes.TopRestaurant],
     }),
@@ -109,7 +109,7 @@ const restaurantsApi = baseApi.injectEndpoints({
       query: () => ({
         url: `/topRestaurants`,
         method: "GET",
-        params: { limit: "999999999999999" },
+        params: { limit: "99999999" },
       }),
       providesTags: [tagTypes.TopRestaurant],
     }),

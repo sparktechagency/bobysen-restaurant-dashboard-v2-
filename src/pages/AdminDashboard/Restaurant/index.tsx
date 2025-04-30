@@ -1,24 +1,23 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from "react";
+import { useState } from "react";
 import ResTable from "../../../component/Table";
 
 import RestaurantCard from "../../../component/RestaurantCard/RestaurantCard";
 import { RestaurantTableTheme } from "../../../themes";
 
+import { EditOutlined } from "@ant-design/icons";
+import { Input } from "antd";
+import { SearchProps } from "antd/es/input";
+import { CgUnavailable } from "react-icons/cg";
+import { MdEventAvailable, MdReviews } from "react-icons/md";
+import { Link, NavLink } from "react-router-dom";
+import { toast } from "sonner";
+import ErrorResponse from "../../../component/UI/ErrorResponse";
+import ResConfirm from "../../../component/UI/PopConfirm";
 import {
   useGetAllRestaurantForadminQuery,
   useHandleChangeStatusMutation,
 } from "../../../redux/features/restaurant/restaurantApi";
-import { Input } from "antd";
-import { SearchProps } from "antd/es/input";
-import { Link, NavLink } from "react-router-dom";
-import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
-import ResConfirm from "../../../component/UI/PopConfirm";
-import { VscVmActive } from "react-icons/vsc";
-import { MdEventAvailable, MdReviews } from "react-icons/md";
-import { toast } from "sonner";
-import ErrorResponse from "../../../component/UI/ErrorResponse";
-import { CgUnavailable } from "react-icons/cg";
 
 const Restaurant = () => {
   const query: Record<string, any> = {};
@@ -31,7 +30,7 @@ const Restaurant = () => {
   const handleChangeStatus = async (id: string, status: string) => {
     const toastId = toast.loading("Updating...");
     try {
-      await handlechangeStatus({ id: id, status: status }).unwrap();
+      await handlechangeStatus({ id: id, data: { status: status } }).unwrap();
       toast.success("Status changed successfully", {
         id: toastId,
         duration: 2000,
