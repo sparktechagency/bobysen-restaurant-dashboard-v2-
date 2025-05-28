@@ -9,12 +9,15 @@ import { BsBorderStyle } from "react-icons/bs";
 import { CiSettings } from "react-icons/ci";
 import AboutUs from "../pages/AboutUs";
 
+import { BiCategory } from "react-icons/bi";
 import { ImPageBreak, ImUser } from "react-icons/im";
 import ABooking from "../pages/AdminDashboard/ABooking";
 import Banner from "../pages/AdminDashboard/Banner";
+import Category from "../pages/AdminDashboard/category";
 import Event from "../pages/AdminDashboard/Events";
 import EventBookingDetails from "../pages/AdminDashboard/Events/EventBookingDetails";
 import Points from "../pages/AdminDashboard/Points";
+import Reviews from "../pages/AdminDashboard/Restaurant/review";
 import TopRestaurant from "../pages/AdminDashboard/TopRestaurant";
 import Users from "../pages/AdminDashboard/Users";
 import ChangePasswordFrom from "../pages/ChangePasswordForm";
@@ -25,7 +28,6 @@ import Profile from "../pages/Profile";
 import Setting from "../pages/Setting";
 import TermsAndCondition from "../pages/TermsAndCondition";
 import UpdatePassword from "../pages/UpdatePassword";
-import Reviews from "../pages/AdminDashboard/Restaurant/review";
 import EditRestaurant from "../pages/VendorDashboard/Restaurant/EditRestaurant";
 
 export const adminRoute = [
@@ -46,6 +48,12 @@ export const adminRoute = [
     path: "banner",
     icon: <ImPageBreak />,
     element: <Banner />,
+  },
+  {
+    name: "Category",
+    path: "category",
+    icon: <BiCategory />,
+    element: <Category />,
   },
   {
     name: "Top Restaurant",
