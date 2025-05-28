@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "antd";
+import { toast } from "sonner";
 import ResForm from "../../../component/Form/FormProvider";
 import ResInput from "../../../component/Form/ResInput";
-import { useAppSelector } from "../../../redux/hooks";
-import { toast } from "sonner";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
-import { useEditMyMenuCategoriesMutation } from "../../../redux/features/menu/menuApi";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { menuValidationSchema } from "../../../schema/menu.schema";
 import UseImageUpload from "../../../hooks/useImageUpload";
+import { useEditMyMenuCategoriesMutation } from "../../../redux/features/menu/menuApi";
+import { useAppSelector } from "../../../redux/hooks";
+import { menuValidationSchema } from "../../../schema/menu.schema";
 
-import FileUpload from "../../../component/FileUpload";
 import { Form } from "antd";
+import FileUpload from "../../../component/FileUpload";
 import showImage from "../../../utils/showImage";
 const EditCategory = ({ setshowEditModal }: any) => {
   const [EditMenuCategory] = useEditMyMenuCategoriesMutation();

@@ -1,23 +1,24 @@
 import { configureStore } from "@reduxjs/toolkit";
 import {
-  persistReducer,
-  persistStore,
   FLUSH,
-  REHYDRATE,
   PAUSE,
   PERSIST,
+  persistReducer,
+  persistStore,
   PURGE,
   REGISTER,
+  REHYDRATE,
 } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { baseApi } from "./api/baseApi";
 import authSlice from "./features/auth/authSlice";
+import categorySlice from "./features/category/categorySlice";
 import layoutSlice from "./features/layout/layoutSlice";
-import otpSlice from "./features/otp/otpSlice";
 import menuSlice from "./features/menu/menuSlice";
-import tableSlice from "./features/table/tableSlice";
 import notificationSlice from "./features/notification/notificationSlice";
+import otpSlice from "./features/otp/otpSlice";
 import restaurantSlice from "./features/restaurant/restaurantSlice";
+import tableSlice from "./features/table/tableSlice";
 import walletSlice from "./features/wallet/walletSlice";
 
 const persistConfig = {
@@ -38,6 +39,7 @@ export const store = configureStore({
     notification: notificationSlice,
     restaurant: restaurantSlice,
     wallet: walletSlice,
+    category: categorySlice,
   },
   middleware: (getDefaultMiddlewares) =>
     getDefaultMiddlewares({
