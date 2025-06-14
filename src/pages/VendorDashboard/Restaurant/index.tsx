@@ -29,6 +29,11 @@ const VendorRestaurant = () => {
       key: "address",
     },
     {
+      title: "Category",
+      key: "category",
+      render: (data: any) => data?.category?.name || "",
+    },
+    {
       title: "Total Tables",
       dataIndex: "tables",
       key: "tables",

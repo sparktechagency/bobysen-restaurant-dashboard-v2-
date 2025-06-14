@@ -9,10 +9,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import ResForm from "../../../component/Form/FormProvider";
 import ResInput from "../../../component/Form/ResInput";
+import ResSelect from "../../../component/Form/ResSelect";
 import ResTextArea from "../../../component/Form/ResTextarea";
 import ResTimePicker from "../../../component/Form/ResTimepicker";
 import MultiUpload from "../../../component/MultiUpload/MultiUpload";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
+import { useGetAllCategoryQuery } from "../../../redux/features/category/categoryApi";
 import {
   useDeleteFileMutation,
   useEditRestaurantMutation,
@@ -32,13 +34,20 @@ const containerStyle = {
 const DEFAULT_CENTER = { lat: 40.7128, lng: -74.006 };
 
 const EditRestaurant = () => {
+  // category
+
+  const {
+    data: CategoryData,
+    isLoading,
+    isFetching,
+  } = useGetAllCategoryQuery({});
+  console.log(CategoryData);
   const { id } = useParams();
   const navigate = useNavigate();
   const [reviewStatus, setReviewStatus] = useState(true);
   const [editRestaurant] = useEditRestaurantMutation();
   const [deleteImages] = useDeleteFileMutation();
   const { data: singleRestaurantData } = useGetSingleRestaurantQuery(id!);
-
   const autocompleteRef = useRef<any>(null);
   const [map, setMap] = useState<any>(null);
   const [marker, setMarker] = useState<any>(null);
@@ -160,7 +169,12 @@ const EditRestaurant = () => {
       ErrorResponse(err, toastId);
     }
   };
-
+  const options = CategoryData?.data?.map((data: any) => {
+    return {
+      label: data?.name,
+      value: data?._id,
+    };
+  });
   return (
     <div>
       <ResForm
@@ -240,7 +254,7 @@ const EditRestaurant = () => {
             )}
           </Col>
 
-          <Col span={12}>
+          <Col span={8}>
             <ResInput
               type="text"
               label="Enter Restaurant name"
@@ -248,12 +262,20 @@ const EditRestaurant = () => {
               placeholder="Type name here"
             />
           </Col>
-          <Col span={12}>
+          <Col span={8}>
             <ResInput
               type="text"
               label="Enter Restaurant address"
               name="address"
               placeholder="Type address"
+            />
+          </Col>
+          <Col span={8}>
+            <ResSelect
+              options={options}
+              label="Select Category"
+              name="category"
+              placeholder="Select Category"
             />
           </Col>
           <Col span={24}>

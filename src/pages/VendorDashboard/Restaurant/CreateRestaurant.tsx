@@ -13,11 +13,13 @@ import { toast } from "sonner";
 import ResForm from "../../../component/Form/FormProvider";
 import ResDatePicker from "../../../component/Form/ResDatePicker";
 import ResInput from "../../../component/Form/ResInput";
+import ResSelect from "../../../component/Form/ResSelect";
 import ResTextArea from "../../../component/Form/ResTextarea";
 import ResTimePicker from "../../../component/Form/ResTimepicker";
 import ErrorResponse from "../../../component/UI/ErrorResponse";
 import { days, defaultTimes } from "../../../constant/days";
 import { TimeValues } from "../../../interface/time";
+import { useGetAllCategoryQuery } from "../../../redux/features/category/categoryApi";
 import { useAddRestaurantMutation } from "../../../redux/features/restaurant/restaurantApi";
 import { restaurantSchema } from "../../../schema/restaurant.schema";
 const containerStyle = {
@@ -52,7 +54,13 @@ const CreateRestaurant = () => {
     googleMapsApiKey: "AIzaSyAu6RiRrpTx0SY5nnFxml5UbOpuHiGNHKI",
     libraries,
   });
-
+  const { data: CategoryData } = useGetAllCategoryQuery({});
+  const options = CategoryData?.data?.map((data: any) => {
+    return {
+      label: data?.name,
+      value: data?._id,
+    };
+  });
   const onMapClick = useCallback(
     (event: any) => {
       const lat = event.latLng.lat();
@@ -164,25 +172,29 @@ const CreateRestaurant = () => {
               <></>
             )}
           </Col>
-          <Col span={12}>
+          <Col span={8}>
             <ResInput
-              size="large"
-              label="Enter Restaurant name"
               type="text"
+              label="Enter Restaurant name"
               name="name"
-              placeholder="type name here"
+              placeholder="Type name here"
             />
           </Col>
-          <Col span={12}>
-            {/* <Autocomplete> */}
+          <Col span={8}>
             <ResInput
-              size="large"
-              label="Enter Restaurant Address"
               type="text"
+              label="Enter Restaurant address"
               name="address"
-              placeholder="type address here"
+              placeholder="Type address"
             />
-            {/* </Autocomplete> */}
+          </Col>
+          <Col span={8}>
+            <ResSelect
+              options={options}
+              label="Select Category"
+              name="category"
+              placeholder="Select Category"
+            />
           </Col>
           <Col span={24}>
             <ResTextArea
