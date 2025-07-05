@@ -14,7 +14,7 @@ import { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
   baseUrl: "https://api.bookatable.mu/api/v1",
-  // baseUrl: "http://192.168.10.5:5005/api/v1",
+  // baseUrl: "http://10.10.10.106:5005/api/v1",
   // credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const otpToken = sessionStorage.getItem("token");

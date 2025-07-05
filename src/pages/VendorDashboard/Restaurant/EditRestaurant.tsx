@@ -21,7 +21,6 @@ import {
   useGetSingleRestaurantQuery,
 } from "../../../redux/features/restaurant/restaurantApi";
 import { restaurantSchema } from "../../../schema/restaurant.schema";
-import showImage from "../../../utils/showImage";
 
 dayjs.extend(customParseFormat);
 
@@ -31,7 +30,7 @@ const containerStyle = {
 };
 
 // Default center if no valid location is available (New York City as fallback)
-const DEFAULT_CENTER = { lat: 40.7128, lng: -74.006 };
+
 
 const EditRestaurant = () => {
   // category
@@ -48,6 +47,7 @@ const EditRestaurant = () => {
   const [editRestaurant] = useEditRestaurantMutation();
   const [deleteImages] = useDeleteFileMutation();
   const { data: singleRestaurantData } = useGetSingleRestaurantQuery(id!);
+  console.log(singleRestaurantData)
   const autocompleteRef = useRef<any>(null);
   const [map, setMap] = useState<any>(null);
   const [marker, setMarker] = useState<any>(null);
@@ -55,37 +55,21 @@ const EditRestaurant = () => {
   const [mapVisible, setMapVisible] = useState(false); // Controls when to show the map
 
   // Get restaurant location or set a fallback default
-  const getRestaurantLocation = () => {
-    if (singleRestaurantData?.data?.location?.coordinates) {
-      return {
-        lat:
-          Number(singleRestaurantData.data.location.coordinates[1]) ||
-          DEFAULT_CENTER.lat,
-        lng:
-          Number(singleRestaurantData.data.location.coordinates[0]) ||
-          DEFAULT_CENTER.lng,
-      };
-    }
-    return DEFAULT_CENTER;
-  };
-
-  const [selectedPosition, setSelectedPosition] = useState(
-    getRestaurantLocation
-  );
+const [selectedPosition, setSelectedPosition] = useState<{ lat: number; lng: number } | null>(null);
 
   // Load images if available
-  useEffect(() => {
-    if (singleRestaurantData?.data?.images) {
-      setFileList(
-        singleRestaurantData?.data?.images?.map((image: any) => ({
-          uid: image?._id,
-          name: image?.url,
-          status: "done",
-          url: showImage(image?.url),
-        }))
-      );
-    }
-  }, [singleRestaurantData]);
+ useEffect(() => {
+  const coordinates = singleRestaurantData?.data?.location?.coordinates;
+  if (coordinates && coordinates.length === 2) {
+    setSelectedPosition({
+      lat: Number(coordinates[1]),
+      lng: Number(coordinates[0]),
+    });
+  }
+}, [singleRestaurantData]);
+
+
+
   const libraries: any = ["places"];
   // Load Google Maps API
   const { isLoaded } = useJsApiLoader({
@@ -95,10 +79,16 @@ const EditRestaurant = () => {
   });
 
   // Manually load map when button is clicked
-  const loadMap = () => {
-    setSelectedPosition(getRestaurantLocation());
-    setMapVisible(true);
-  };
+const loadMap = () => {
+  if (singleRestaurantData?.data?.location?.coordinates) {
+    const [lng, lat] = singleRestaurantData.data.location.coordinates;
+    setSelectedPosition({
+      lat: Number(lat),
+      lng: Number(lng),
+    });
+  }
+  setMapVisible(true);
+};
 
   // Handle map clicks to update selected location
   const onMapClick = useCallback(
@@ -145,7 +135,7 @@ const EditRestaurant = () => {
 
   const onSubmit = async (data: any) => {
     const location = {
-      coordinates: [selectedPosition.lng, selectedPosition.lat],
+      coordinates: [selectedPosition!.lng, selectedPosition!.lat],
       type: "Point",
     };
 
@@ -207,7 +197,7 @@ const EditRestaurant = () => {
               isLoaded && (
                 <GoogleMap
                   mapContainerStyle={containerStyle}
-                  center={selectedPosition}
+                  center={selectedPosition || { lat: 23.8103, lng: 90.4125 }}
                   zoom={12}
                   onLoad={(map) => {
                     setMap(map);
