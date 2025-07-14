@@ -1,14 +1,30 @@
 /* eslint-disable @typescript-eslint/no-loss-of-precision */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { DeleteOutlined } from "@ant-design/icons";
+import { toast } from "sonner";
 import ABookingCard from "../../../component/ABookingCard/ABookingCard";
 import ResTable from "../../../component/Table";
-import { useGetAllBookingForAdminQuery } from "../../../redux/features/booking/bookingApi";
+import ErrorResponse from "../../../component/UI/ErrorResponse";
+import ResConfirm from "../../../component/UI/PopConfirm";
+import { useGetAllBookingForAdminQuery, useUpdateBookingMutation } from "../../../redux/features/booking/bookingApi";
 const ABooking = () => {
   const query: any = {};
   query["limit"] = 999999999999;
   const { data: ABdata, isLoading } = useGetAllBookingForAdminQuery(query);
-
+  const [UpdateBooking] = useUpdateBookingMutation()
+ const handleDeleteBookingByAdmin = async (id: string) => {
+    const toastId = toast.loading("Deleting..");
+    try {
+      await UpdateBooking({id:id,body:{isDeleted:true}}).unwrap();
+      toast.success("Reservation deleted successfully", {
+        id: toastId,
+        duration: 2000,
+      });
+    } catch (error) {
+      ErrorResponse(error, toastId);
+    }
+  };
   const column = [
     // {
     //   title: "#SL",
@@ -48,21 +64,22 @@ const ABooking = () => {
       key: "time",
     },
 
-    // {
-    //   title: "Delete",
-    //   key: "action",
-    //   render: (data: any, index: number) => {
-    //     return (
-    //       <div className="text-center">
-    //         <DeleteOutlined
-    //           onClick={() => {}}
-    //           className="cursor-pointer"
-    //           key={index}
-    //         />
-    //       </div>
-    //     );
-    //   },
-    // },
+    {
+      title: "Delete",
+      key: "action",
+      render: (data: any, index: number) => {
+        return (
+          <div className="text-center">
+             <ResConfirm
+              handleOk={() => handleDeleteBookingByAdmin(data?._id)}
+              description="this action cannot be undone!"
+            >
+              <DeleteOutlined className="cursor-pointer" key={index} />
+            </ResConfirm>
+          </div>
+        );
+      },
+    },
   ];
   return (
     <div>
