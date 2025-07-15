@@ -8,6 +8,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "sonner";
 import ResForm from "../../../component/Form/FormProvider";
+import ResDatePicker from "../../../component/Form/ResDatePicker";
 import ResInput from "../../../component/Form/ResInput";
 import ResSelect from "../../../component/Form/ResSelect";
 import ResTextArea from "../../../component/Form/ResTextarea";
@@ -244,6 +245,7 @@ const loadMap = () => {
             )}
           </Col>
 
+   
           <Col span={8}>
             <ResInput
               type="text"
@@ -275,7 +277,42 @@ const loadMap = () => {
               placeholder="Type description"
             />
           </Col>
-
+           <Col span={6}>
+            <ResDatePicker
+              showTime={true}
+              size="large"
+              label="Enter Close From"
+              name="close.from"
+              placeholder="select date and time"
+            />
+          </Col>
+          <Col span={6}>
+            <ResDatePicker
+              showTime={true}
+              size="large"
+              label="Enter Close To"
+              name="close.to"
+              placeholder="select date and time"
+            />
+          </Col>
+          <Col span={6}>
+            <ResInput
+              size="large"
+              label="Enter helpineNumber (the number should have whatsapp)"
+              type="text"
+              name="helpLineNumber1"
+              placeholder="type number"
+            />
+          </Col>
+     <Col span={6}>
+            <ResInput
+              size="large"
+              label="Enter Another Number"
+              type="text"
+              name="helpLineNumber2"
+              placeholder="type number"
+            />
+          </Col>
           <Col span={24} className="flex gap-x-4">
             <Form.Item name="review-status">
               <div className="flex gap-x-2 items-center">

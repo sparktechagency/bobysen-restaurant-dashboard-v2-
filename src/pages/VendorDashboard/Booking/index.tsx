@@ -29,7 +29,7 @@ const Booking = () => {
   // const query: Record<string, any> = {};
   if (date) query["date"] = date;
   if (searchTerm) query["searchTerm"] = searchTerm;
-  query["status"] = "active";
+
   const { data: bookingData, isLoading } = useGetAllBookingQuery(query);
   const [updateBooking] = useUpdateBookingMutation();
   const handleChangeStatus = async (id: string, status: string) => {
@@ -116,7 +116,7 @@ const Booking = () => {
             </ResConfirm>
             <ResConfirm
               description="This action cannot be undone"
-              handleOk={() => handleChangeStatus(data?._id, "closed")}
+              handleOk={() => handleChangeStatus(data?._id, "completed")}
             >
               <Tag className="cursor-pointer">Closed</Tag>
             </ResConfirm>

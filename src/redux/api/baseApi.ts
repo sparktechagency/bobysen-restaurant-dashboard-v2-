@@ -13,8 +13,8 @@ import { logout, setUser } from "../features/auth/authSlice";
 import { RootState } from "../store";
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: "https://api.bookatable.mu/api/v1",
-  // baseUrl: "http://10.10.10.106:5005/api/v1",
+  // baseUrl: "https://api.bookatable.mu/api/v1",
+  baseUrl: "http://10.10.10.106:5005/api/v1",
   // credentials: "include",
   prepareHeaders: (headers, { getState }) => {
     const otpToken = sessionStorage.getItem("token");

@@ -14,7 +14,7 @@ const BookingCard = ({ restaurant }: any) => {
     restaurant: restaurant,
   });
   const { data: totalClosedBook } = useGetAllBookingQuery({
-    status: "closed",
+    status: "completed",
     restaurant: restaurant,
   });
 

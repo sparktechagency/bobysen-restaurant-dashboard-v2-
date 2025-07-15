@@ -10,7 +10,7 @@ import ResConfirm from "../../../component/UI/PopConfirm";
 import { useGetAllBookingForAdminQuery, useUpdateBookingMutation } from "../../../redux/features/booking/bookingApi";
 const ABooking = () => {
   const query: any = {};
-  query["limit"] = 999999999999;
+  query["limit"] = 9999999;
   const { data: ABdata, isLoading } = useGetAllBookingForAdminQuery(query);
   const [UpdateBooking] = useUpdateBookingMutation()
  const handleDeleteBookingByAdmin = async (id: string) => {
