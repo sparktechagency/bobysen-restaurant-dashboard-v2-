@@ -41,24 +41,20 @@ const EditRestaurant = () => {
     isLoading,
     isFetching,
   } = useGetAllCategoryQuery({});
-  console.log(CategoryData);
   const { id } = useParams();
   const navigate = useNavigate();
   const [reviewStatus, setReviewStatus] = useState(true);
   const [editRestaurant] = useEditRestaurantMutation();
   const [deleteImages] = useDeleteFileMutation();
   const { data: singleRestaurantData } = useGetSingleRestaurantQuery(id!);
-  console.log(singleRestaurantData)
   const autocompleteRef = useRef<any>(null);
   const [map, setMap] = useState<any>(null);
   const [marker, setMarker] = useState<any>(null);
   const [fileList, setFileList] = useState<UploadFile[]>([]);
   const [mapVisible, setMapVisible] = useState(false); // Controls when to show the map
-
-  // Get restaurant location or set a fallback default
 const [selectedPosition, setSelectedPosition] = useState<{ lat: number; lng: number } | null>(null);
+ const images = singleRestaurantData?.data?.images || [];
 
-  // Load images if available
  useEffect(() => {
   const coordinates = singleRestaurantData?.data?.location?.coordinates;
   if (coordinates && coordinates.length === 2) {
@@ -67,6 +63,15 @@ const [selectedPosition, setSelectedPosition] = useState<{ lat: number; lng: num
       lng: Number(coordinates[0]),
     });
   }
+  const defaultFileList = images.map((img: any, index: number) => ({
+    uid: img?._id || `-${index + 1}`,        // unique id (can use _id)
+    name: `image-${index + 1}.jpg`,         // fallback name
+    status: 'done',
+    url: img?.url,                           // actual URL for preview
+  }));
+
+  setFileList(defaultFileList);
+
 }, [singleRestaurantData]);
 
 
@@ -166,6 +171,28 @@ const loadMap = () => {
       value: data?._id,
     };
   });
+
+  // delete image
+
+
+ const handleImageDelete = (deleteImages: any) => {
+  return async (file: any): Promise<boolean> => {
+    const toastId = toast.loading("Deleting image...");
+    const body  = {
+      imageId:file.uid,
+      restaurantId:singleRestaurantData?.data?._id
+    }
+    try {
+      await deleteImages(body).unwrap(); // uid = image._id
+      toast.success("Image deleted successfully", { id: toastId });
+      return true;
+    } catch (err) {
+      toast.error("Failed to delete image", { id: toastId });
+      return false;
+    }
+  };
+};
+
   return (
     <div>
       <ResForm
@@ -177,6 +204,7 @@ const loadMap = () => {
           <Col span={12}>
             <Form.Item>
               <MultiUpload
+              removeFile={handleImageDelete(deleteImages)}
                 fileList={fileList as RcFile[]}
                 setFileList={setFileList}
               />
